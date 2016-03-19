@@ -1,0 +1,20 @@
+{
+"name":"bart_api_mean"
+,"version":"0.0.1"
+,"description":"BART API application I can use for scheduling my trips and other BART related activities."
+,"keywords":["bart","pi","tre'","tre","grisby","lewis"]
+,"homepage":"https://docs.npmjs.com/files/package.json"
+,"license":"MIT License"
+,"author":{"name":"Tre' Grisby","email":"trewaters@hotmail.com"}
+,"main":"ba_lkgiii"
+,"repository": {
+    "type":"git"
+    ,"url":"https://github.com/Trewaters/bart_api_mean"
+}
+,"dependencies": {
+    
+}
+,"scripts": {
+    "start": "node server.js"
+}
+}
