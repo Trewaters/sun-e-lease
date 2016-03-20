@@ -15,3 +15,5 @@ Git Commands
     -this set up the configuration for talking with a remote server from my computer.
 4) git clone https://github.com/Trewaters/bart_api_mean.git
     -this would clone the remote repository to my local computer.
+5) git config --global credential.helper wincred
+    -help git remember my credentials so I don't have to give username and password with each commit
