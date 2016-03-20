@@ -3,6 +3,7 @@ Commit Notes
 =
 [INITIALIZE]
 [DEBUG]
+[UPDATE]
 
 ===
 Git Commands
