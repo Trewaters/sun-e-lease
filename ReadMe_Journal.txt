@@ -38,6 +38,7 @@ https://code.visualstudio.com/Docs/editor/versioncontrol
 
 - github markdown
 https://help.github.com/articles/basic-writing-and-formatting-syntax/
+http://daringfireball.net/projects/markdown/syntax
 
 - node modules
 https://www.npmjs.com/package/xml2json
