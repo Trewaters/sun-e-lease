@@ -4,21 +4,21 @@ var app = express();
 var config = require('./config_bartapi.js');
 
 var bart = require('bay-area-rapid-transit');
+var client = new bart(config.bart.client);
 
 //[reference] https://www.npmjs.com/package/body-parser
 var bodyParser = require('body-parser');
 
 //[reference] https://www.npmjs.com/package/morgan
 var logger = require('morgan');
-app.use(morgan('dev')); // dev format (:method :url :status :response-time ms - :res[content-length])
+app.use(logger('dev')); // dev format (:method :url :status :response-time ms - :res[content-length])
 
-
+/*
 //app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine','jade');
 
-/*
 var index = require('./routes/index');
 
 app.use('/',index);
