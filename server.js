@@ -32,10 +32,10 @@ app.use(express.static('public'));
 
 /*
 http test
-https://docs.nodejitsu.com/articles/HTTP/clients/how-to-create-a-HTTP-request (reference)
 */
 var vCmd = 'etd';
 var vOrig = 'RICH';
+var vShow = '';
 
 var http = require('http');
 
@@ -45,6 +45,7 @@ var options = {
 };
 
 callback = function(response) {
+
     var str = '';
     var vParsed = '';
 
@@ -54,21 +55,19 @@ callback = function(response) {
     });
 
     response.on('end', function() {
-        console.log(str);
-        parseString(vParsed, function(err,result){
-            console.log(result)
+
+        parseString(vParsed, function(err, result) {
+            vShow = JSON.stringify(result);
+            console.log(vShow)
         });
     });
 };
 
+//https://nodejs.org/api/http.html#http_http_request_options_callback
 http.request(options, callback).end();
 
 app.get('/', function(req, res) {
     console.log('get /');
-
-    var vValue = vUrl;
-
-    console.log(vUrl);
 
     /*
     bart.advisories('station');
@@ -78,7 +77,7 @@ app.get('/', function(req, res) {
     });
     */
 
-    res.send('BART api website is running. BART API data');
+    res.send('BART api website is running. BART API data = ' + vShow);
 
 });
 

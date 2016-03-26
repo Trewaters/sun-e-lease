@@ -23,7 +23,6 @@
     "url": "https://github.com/Trewaters/bart_api_mean.git"
   },
   "dependencies": {
-    "bay-area-rapid-transit": "^0.4.1",
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
     "jade": "^1.11.0",
