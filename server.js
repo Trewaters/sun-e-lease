@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 app.use(logger('dev')); // dev format (:method :url :status :response-time ms - :res[content-length])
 
+var parseString = require('xml2js').parseString;
+
 /*
 //app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
@@ -23,14 +25,51 @@ app.use('/',index);
 */
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //app.use(express.static(__dirname + 'public'));
 app.use(express.static('public'));
 
-app.get('/',function(req, res){
+/*
+http test
+https://docs.nodejitsu.com/articles/HTTP/clients/how-to-create-a-HTTP-request (reference)
+*/
+var vCmd = 'etd';
+var vOrig = 'RICH';
+
+var http = require('http');
+
+var options = {
+    host: 'api.bart.gov',
+    path: '/api/' + vCmd + '.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&key=' + config.bart.client
+};
+
+callback = function(response) {
+    var str = '';
+    var vParsed = '';
+
+    response.on('data', function(chunk) {
+        str += chunk;
+        vParsed += chunk;
+    });
+
+    response.on('end', function() {
+        console.log(str);
+        parseString(vParsed, function(err,result){
+            console.log(result)
+        });
+    });
+};
+
+http.request(options, callback).end();
+
+app.get('/', function(req, res) {
     console.log('get /');
-    
+
+    var vValue = vUrl;
+
+    console.log(vUrl);
+
     /*
     bart.advisories('station');
     
@@ -38,26 +77,26 @@ app.get('/',function(req, res){
         'cmd':'etd','orig':'RICH'
     });
     */
-    
-    res.send( 'BART api website is running. \n BART API data = \n'  + JSON.stringify( bart.realTimeEstimates( {'cmd':'etd','orig':'RICH','key':config.bart.client} ) ) );
-    
+
+    res.send('BART api website is running. BART API data');
+
 });
 
-app.post('/post_this',function(req,res){
+app.post('/post_this', function(req, res) {
     res.send('BART api "post_this"');
 });
 
-app.delete('/delete_this',function(req,res){
+app.delete('/delete_this', function(req, res) {
     res.send('BART api "delete_this"');
 });
 
-app.put('/put_this',function(req,res){
+app.put('/put_this', function(req, res) {
     res.send('BART api "put_this"');
 });
 
-var server = app.listen(3000, function(){
+var server = app.listen(3000, function() {
     var host = server.address().address;
     var port = server.address().port;
-    
+
     console.log("app.listen on port 3000, http://%s%s", host, port);
 });
