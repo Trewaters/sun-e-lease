@@ -3,9 +3,6 @@ var app = express();
 
 var config = require('./config_bartapi.js');
 
-var bart = require('bay-area-rapid-transit');
-var client = new bart(config.bart.client);
-
 var bodyParser = require('body-parser');
 
 var logger = require('morgan');
