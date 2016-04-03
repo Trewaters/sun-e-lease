@@ -1,50 +1,18 @@
-<html>
+<html  ng-app="bartAppScheduler" >
 
 <head>
-    <link rel="stylesheet" href="styles.css">
-
-    
-    <!--
-        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="/javascript/bartAppScheduler.js"></script>
-    -->
-
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.js"></script>
+    <script src="/javascript/bartAppScheduler.js"></script>
+    
 </head>
 
-<!-- 3. Display the application -->
-
 <body>
-    <div ng-app="bartAppScheduler" ng-controller="mainScreen">
-<center>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                You Are Here <span class="glyphicon glyphicon-star-empty"></span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#"></a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                Destination Stations <span class="glyphicon glyphicon-road"></span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#"></a>
-                </li>
-            </ul>
-        </div>
-</center>
-
-    </div>
+    <div ng-view></div>
 </body>
 
 </html>

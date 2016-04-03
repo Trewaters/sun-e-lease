@@ -1,6 +1,5 @@
 var express = require('express');
 var app = express();
-var nodeModules = express.Router();
 
 var config = require('./config_bartapi.js');
 
@@ -11,11 +10,11 @@ app.use(logger('dev')); // dev format (:method :url :status :response-time ms - 
 
 var parseString = require('xml2js').parseString;
 var util = require('util');
-/*
-//app.use(favicon(__dirname + '/public/img/favicon.ico'));
+var path = require('path');
 
-app.set('views', path.join(__dirname,'views'));
-app.set('view engine','jade');
+/*
+
+//app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
 var index = require('./routes/index');
 
@@ -25,8 +24,16 @@ app.use('/',index);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//app.use(express.static(__dirname + 'public'));
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
+//app.use(express.static('public'));
+
+//app.set('views','./views');
+//app.set('views',path.join(__dirname + '/views'));
+app.set('view engine','jade');
+
+// initialize routes
+var yah = require('./routes/yah');
+app.use('/yah',yah);
 
 /*
 http test
@@ -57,13 +64,15 @@ callback = function(response) {
         parseString(vParsed, function(err, result) {
             vShow = JSON.stringify(result);
             
-            console.log("vShow = " + vShow + "\n");
+            //console.log("vShow = " + vShow + "\n");
             
-            console.log("result.root = " + JSON.stringify(result.root) + "\n");
+            //console.log("result.root = " + JSON.stringify(result.root) + "\n");
+            
             console.log("result.root.uri = " + JSON.stringify(result.root.uri) + "\n");
             console.log("result.root.date = " + JSON.stringify(result.root.date) + "\n");
             console.log("result.root.time = " + JSON.stringify(result.root.time) + "\n");
             console.log("result.root.station = " + util.inspect(result.root.station,{showHidden:false, depth:null}) + "\n");
+            /*
             console.log("result.root.station[0].name = " + result.root.station[0].name + "\n");
             console.log("result.root.station[0].abbr = " + result.root.station[0].abbr + "\n");
             console.log("result.root.station[0].etd[0].destination = " + result.root.station[0].etd[0].destination + "\n");
@@ -102,7 +111,7 @@ callback = function(response) {
             console.log("result.root.station[0].etd[1].estimate[1].color = " + result.root.station[0].etd[1].estimate[1].color + "\n");
             console.log("result.root.station[0].etd[1].estimate[1].hexcolor = " + result.root.station[0].etd[1].estimate[1].hexcolor + "\n");
             console.log("result.root.station[0].etd[1].estimate[1].bikeflag = " + result.root.station[0].etd[1].estimate[1].bikeflag + "\n");
-            
+            */
             console.log("result.root.message = " + JSON.stringify(result.root.message) + "\n");
             
             
@@ -158,24 +167,14 @@ callback = function(response) {
 
 //https://nodejs.org/api/http.html#http_http_request_options_callback
 
-http.request(options, callback).end();
+//http.request(options, callback).end();
 
+/*
 app.get('/', function(req, res) {
     console.log('get /');
-
-    /*
-    bart.advisories('station');
-    
-    bart.realTimeEstimates({
-        'cmd':'etd','orig':'RICH'
-    });
-    
-    vShow = http.request(options, callback).end();
-    */
-    
-
+    //res.sendFile(path.join(__dirname + '/public/index.html'));
+    //res.render('index');
     res.send('BART api website is running. BART API data = ' + vShow);
-
 });
 
 app.post('/post_this', function(req, res) {
@@ -189,10 +188,11 @@ app.delete('/delete_this', function(req, res) {
 app.put('/put_this', function(req, res) {
     res.send('BART api "put_this"');
 });
+*/
 
 var server = app.listen(3000, function() {
-    var host = server.address().address;
+    var address = server.address().address;
     var port = server.address().port;
 
-    console.log("app.listen on port 3000, http://%s%s", host, port);
+    console.log("app.listen on port 3000, http://%s%s", address, port);
 });
