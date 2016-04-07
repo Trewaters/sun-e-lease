@@ -1,37 +1,55 @@
 <center>
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                You Are Here <span class="glyphicon glyphicon-star-empty"></span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#"></a>
-                </li>
-            </ul>
-        </div>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" onclick="getLocation()"><!-- This getlocation() works -->
+            You Are Here <span class="glyphicon glyphicon-star-empty"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="#"></a>
+            </li>
+        </ul>
+    </div>
 
-        <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                Destination Stations <span class="glyphicon glyphicon-road"></span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="#"></a>
-                </li>
-            </ul>
-            <br>
-            <br>
-            <p>
+    <select onclick="getLocation()"><!-- This getlocation() Does Not work -->
+        <option value="">You Are Here(HTML Drop)</option>
+        <option value="">Test</option>
+    </select>
+
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Destination Stations <span class="glyphicon glyphicon-road"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="#"></a>
+            </li>
+        </ul>
+        <br>
+        <br>
+        <p>
             NEXT TRAIN (train times of "You Are Here" station)
-            </p>
-            <p>
+        </p>
+        <p>
             TRIP DETAILS (between selected stations)
-            </p>
-            {{message}}
-            
-    
-            <button  class="btn submit-btn pull-right" ng-click="vGeolocation()">vGeolocation</button>
+        </p>
+        
+        <div ng-show="!showResult()"> 
+            Error : {{error}}
+            Error Code: {{error.code}}
         </div>
+        
+        <br> Latitude = {{vLat}}
+        <br> Longitude = {{vLong}}
+        <br> Accuracy = {{vAcc}}
+        <br> {{message}}
+
+        <button onclick="getLocation()">Click for coordinates and a map</button>
+
+        <div id="drop"></div>
+        <div id="mapholder"></div>
+        <div id="error"></div>
+    </div>
+    </div>
 </center>

@@ -7,7 +7,8 @@ var config = require('../config_bartapi');
 
 router.route('/here')
 .get(function(req,res){
-    
+   
+   
    return ('testing /here') 
 });
 

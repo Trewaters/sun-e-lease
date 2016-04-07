@@ -1,4 +1,4 @@
-<html  ng-app="bartAppScheduler" >
+<html ng-app="bartAppScheduler">
 
 <head>
     <link rel="stylesheet" href="/styles.css">
@@ -9,24 +9,54 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.js"></script>
     <script src="/javascript/bartAppScheduler.js"></script>
 
-    <script>
-    function doSomething(){
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(handle_geolocation_query);
-        } else {
-            alert("I'm sorry, but geolocation services are not supported by your browser.");
-        }
-    }
-
-    function handle_geolocation_query(position) {
-        alert('Lat: ' + position.coords.latitude + ' ' + 'Long: ' + position.coords.latitude);
-    }
-    </script>
-    
+    <!--
+        
+        -->
 </head>
 
 <body>
     <div ng-view></div>
 </body>
 
+<script type="text/javascript">
+        var x = document.getElementById("error");
+        
+        function getLocation(){
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition);
+                
+            }else{
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        };
+        
+        function showPosition(position){
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+            
+            document.getElementById("drop").innerHTML = "<select><option value='"+position.coords.latitude +"'>Latitude ="+position.coords.latitude +" </option><option value='"+position.coords.longitude+"'>Longitude ="+position.coords.longitude +" </option></select>"
+                        
+            var img_url = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=14&size=400x300&sensor=false";
+            
+            document.getElementById("mapholder").innerHTML = "<br><img src='" + img_url + "'>";
+           
+        };
+        
+        function showError(error){
+            switch(error.code){
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POITION_UNAVAILABLE:
+                    x.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "An unknown error occurred."
+                    break; 
+            };
+        };
+    </script>
+    
 </html>

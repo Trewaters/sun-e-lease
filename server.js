@@ -66,7 +66,7 @@ callback = function(response) {
             console.log("result.root.date = " + JSON.stringify(result.root.date) + "\n");
             console.log("result.root.time = " + JSON.stringify(result.root.time) + "\n");
             console.log("result.root.station = " + util.inspect(result.root.station,{showHidden:false, depth:null}) + "\n");
-            /*
+            
             console.log("result.root.station[0].name = " + result.root.station[0].name + "\n");
             console.log("result.root.station[0].abbr = " + result.root.station[0].abbr + "\n");
             console.log("result.root.station[0].etd[0].destination = " + result.root.station[0].etd[0].destination + "\n");
@@ -86,7 +86,7 @@ callback = function(response) {
             console.log("result.root.station[0].etd[0].estimate[1].color = " + result.root.station[0].etd[0].estimate[1].color + "\n");
             console.log("result.root.station[0].etd[0].estimate[1].hexcolor = " + result.root.station[0].etd[0].estimate[1].hexcolor + "\n");
             console.log("result.root.station[0].etd[0].estimate[1].bikeflag = " + result.root.station[0].etd[0].estimate[1].bikeflag + "\n");
-            
+            /*
             console.log("result.root.station[0].etd[1].destination = " + result.root.station[0].etd[1].destination + "\n");
             console.log("result.root.station[0].etd[1].abbreviation = " + result.root.station[0].etd[1].abbreviation + "\n");
             console.log("result.root.station[0].etd[1].limited = " + result.root.station[0].etd[1].limited + "\n");
@@ -161,7 +161,7 @@ callback = function(response) {
 
 //https://nodejs.org/api/http.html#http_http_request_options_callback
 
-//http.request(options, callback).end();
+http.request(options, callback).end();
 
 /*
 app.get('/', function(req, res) {

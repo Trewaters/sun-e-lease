@@ -23,26 +23,49 @@ app.factory('youAreHere', function($resource, $q, $rootScope) {
 // controllers
 //---
 app.controller('mainScreen', function($scope) {
+    
     $scope.message = "Main Screen controller";
-
-    //$scope.valueYouAreHere = youAreHere.get();
-
-    console.log('about to enter vGeolocation');
-
-    $scope.vGeoLocation = function getLocation() {
-        console.log('start vGeolocation');
-
-        var showPosition;
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-
-            alert("Latitude: " + showPosition.coords.latitude +
-                "<br>Longitude: " + showPosition.coords.longitude);
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
+    
+     $scope.vLat = "0";
+     $scope.vLong = "0";
+     $scope.accuracy = "0";
+     $scope.error = "";
+     
+     $scope.showResult = function(){
+         return $scope.error == "";
+     };
+     
+    $scope.aShowPosition = function(position){
+        $scope.vLat = position.coords.latitude;
+        $scope.vLong = position.coords.longitude;
+        $scope.vAcc = position.coords.accuracy;
+        $scope.$apply();
     };
-    console.log('after vGeolocation');
-
+    
+    $scope.aLocation = function(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition($scope.aShowPosition)
+        }else{
+            $scope.error = "Angular Geolocation is not supported by this browser.";
+        };
+    };
+     
+     $scope.showError = function (error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    $scope.error = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    $scope.error = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    $scope.error = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    $scope.error = "An unknown error occurred."
+                    break;
+            }
+            $scope.$apply();
+        }
+     $scope.aLocation();
 });
