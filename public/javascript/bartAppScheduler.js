@@ -22,7 +22,7 @@ app.factory('youAreHere', function($resource, $q, $rootScope) {
 //---
 // controllers
 //---
-app.controller('mainScreen', function($scope) {
+app.controller('mainScreen', function($scope, youAreHere) {
     
     $scope.message = "Main Screen controller";
     
@@ -68,4 +68,7 @@ app.controller('mainScreen', function($scope) {
             $scope.$apply();
         }
      $scope.aLocation();
+     
+     $scope.stations = youAreHere.query();
+     
 });

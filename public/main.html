@@ -1,17 +1,22 @@
 <center>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" onclick="getLocation()"><!-- This getlocation() works -->
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <!-- This getlocation() works -->
             You Are Here <span class="glyphicon glyphicon-star-empty"></span>
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li>
-                <a href="#"></a>
+            <li ng-repeat="station in stations">
+                <a href="#">{{station.stations.station.name}}</a>
             </li>
         </ul>
+
     </div>
 
-    <select onclick="getLocation()"><!-- This getlocation() Does Not work -->
+    <!-- station = {{stations}} -->
+
+    <select onclick="getLocation()">
+        <!-- This getlocation() Does Not work -->
         <option value="">You Are Here(HTML Drop)</option>
         <option value="">Test</option>
     </select>
@@ -34,12 +39,11 @@
         <p>
             TRIP DETAILS (between selected stations)
         </p>
-        
-        <div ng-show="!showResult()"> 
-            Error : {{error}}
-            Error Code: {{error.code}}
+
+        <div ng-show="!showResult()">
+            Error : {{error}} Error Code: {{error.code}}
         </div>
-        
+
         <br> Latitude = {{vLat}}
         <br> Longitude = {{vLong}}
         <br> Accuracy = {{vAcc}}
