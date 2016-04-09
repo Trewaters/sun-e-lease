@@ -161,28 +161,7 @@ callback = function(response) {
 
 //https://nodejs.org/api/http.html#http_http_request_options_callback
 
-http.request(options, callback).end();
-
-/*
-app.get('/', function(req, res) {
-    console.log('get /');
-    //res.sendFile(path.join(__dirname + '/public/index.html'));
-    //res.render('index');
-    res.send('BART api website is running. BART API data = ' + vShow);
-});
-
-app.post('/post_this', function(req, res) {
-    res.send('BART api "post_this"');
-});
-
-app.delete('/delete_this', function(req, res) {
-    res.send('BART api "delete_this"');
-});
-
-app.put('/put_this', function(req, res) {
-    res.send('BART api "put_this"');
-});
-*/
+//http.request(options, callback).end();
 
 var server = app.listen(3000, function() {
     var address = server.address().address;

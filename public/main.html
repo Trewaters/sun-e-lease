@@ -1,4 +1,4 @@
-    <center>
+<center>
     <!-- 
                <br>
     <p ng-repeat="station in stations">ng-repeat variable station = {{station}}</p>
@@ -9,43 +9,35 @@
             -->
 
     <label>You Are Here</label>
-    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMap()"></select>
+    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMapYAH()"></select>
+    <br> {{selectedStationYAH}}
     <br>
-     {{selectedStationYAH}}
-     <br>
 
     <label>Destination Stations</label>
-    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="aLocation()"></select>
-    <br>
-    {{selectedStationDS}}
+    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="hereMapDS()"></select>
+    <br> {{selectedStationDS}}
 
-        <p>
-            NEXT TRAIN (train times of "You Are Here" station)
-        </p>
-        <p>
-            TRIP DETAILS (between selected stations)
-        </p>
+    <p>
+        NEXT TRAIN (train times of "You Are Here" station)
+    </p>
+    <button type="button">
+        Get Train Information for {{selectedStationYAH}}
+    </button>
 
-        <div ng-show="!showResult()">
-            Error : {{error}} Error Code: {{error.code}}
-        </div>
+    <p>
+        TRIP DETAILS (between selected stations)
+    </p>
 
-        <br> Index Of {{selectedStationYAH}} ( {{vStaDetailsYAH}} )
-        
-        <br> Latitude (DS)= {{vLatDS}}
-        <br> Longitude (DS)= {{vLongDS}}
-        
-        <br> Latitude (YAH)= {{vLatYAH}}
-        <br> Longitude (YAH)= {{vLongYAH}}
-        
-        <br> Accuracy = {{vAcc}}
-        <br> {{message}}
-<!--
-        <button onclick="getLocation()">Click for coordinates and a map</button>
-
-        <div id="drop"></div>
-        <div id="mapholder"></div>
-        <div id="error"></div>
-        -->
+    <div ng-show="!showResult()">
+        Error : {{error}} Error Code: {{error.code}}
     </div>
 </center>
+<br>YAH value = {{selectedStationYAH}}
+<br>YAH details =( {{vStaDetailsYAH}} )
+<br> Latitude (YAH)= {{vLatYAH}}
+<br> Longitude (YAH)= {{vLongYAH}}
+<br>
+<br>DS value = {{selectedStationDS}}
+<br>DS details =( {{vStaDetailsDS}} )
+<br> Latitude (DS)= {{vLatDS}}
+<br> Longitude (DS)= {{vLongDS}}

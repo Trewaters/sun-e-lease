@@ -29,6 +29,68 @@ router.route('/here')
            
         });
      */
+
+
+// Real Time Departure from a given station
+router.route('/departTimeStation')
+    .get(function(req, res) {
+        vCmd = 'etd';
+        vOrig = req.query.vOriginStation;
+        vDir = 'n'; // [NOTE] - 'n' or 's', north or south, OPTIONAL
+        vPlat = 1; // [NOTE] - 1 to 4, number of platform, OPTIONAL
+        
+        //console.log('vOriginStation' + req.query)
+
+        var xoptions = {
+            host: 'api.bart.gov',
+            path: '/api/etd.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&key=' + config.bart.client
+            // all the optional fields for the path
+            //path: '/api/etd.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&key=' + config.bart.client + '&dir=' + vDir + '&plat=' + vPlat
+        };
+
+        var xcallback = function(response) {
+
+            response.on('data', function(chunk) {
+                vParsed += chunk;
+            });
+
+            response.on('end', function() {
+                parseString(vParsed, function(err, result) {
+                    vShow = JSON.stringify(result);
+
+/*
+                    console.log("etd result.root.uri = " + JSON.stringify(result.root.uri) + "\n");
+                    console.log("etd result.root.date = " + JSON.stringify(result.root.date) + "\n");
+                    console.log("etd result.root.time = " + JSON.stringify(result.root.time) + "\n");
+                    console.log("etd result.root.station = " + util.inspect(result.root.station, { showHidden: false, depth: null }) + "\n");
+*/
+                    
+                    //console.log('vShow = ' + vShow);
+                    //console.log("etd result.root.station = " + util.inspect(result.root.station, { showHidden: false, depth: null }) + "\n")
+                    
+                    /*
+                    console.log("etd station array length = " + result.root.station.length);
+                    var vIndexStation = result.root.station.length - 1;
+                    console.log("etd etd array length = " + result.root.station.etd.length);
+                    var vIndexEtd = result.root.station.etd.length - 1;
+                    console.log("etd estimate array length = " + result.root.station.etd.estimate.length);
+                    var vIndexEstimate = result.root.station.etd.estimate.length - 1;
+                    */
+                    
+                    //console.log("etd list station number = " + result.root.station[vIndexNum].station.length);
+                    //var vStaNum = result.root.stations[vIndexNum].station.length;
+
+                    return res.send(vShow);
+                });
+            });
+        };
+
+        http.request(xoptions, xcallback).end();
+
+    });
+    
+
+// list all BART stations
 router.route('/listAllStations')
     .get(function(req, res) {
         vCmd = 'stns';
@@ -38,25 +100,28 @@ router.route('/listAllStations')
             path: '/api/stn.aspx?cmd=' + vCmd + '&key=' + config.bart.client
         };
 
-        callback = function(response) {
+        var callback = function(response) {
 
             response.on('data', function(chunk) {
                 vParsed += chunk;
-                //console.log('vParsed = ' + vParsed);
             });
 
             response.on('end', function() {
                 parseString(vParsed, function(err, result) {
                     vShow = JSON.stringify(result);
 
+                    /*
                     //console.log('stations = ' + vShow);
-                    console.log("result.root.uri = " + JSON.stringify(result.root.uri) + "\n");
-                    console.log("result.root.stations = " + util.inspect(result.root.stations, { showHidden: false, depth: null }) + "\n");
-                    console.log("result.root.stations.station.name = " + JSON.stringify(result.root.stations[0].station[0].name) + "\n");
+                    console.log("stns result.root.uri = " + JSON.stringify(result.root.uri) + "\n");
+                    console.log("stns result.root.stations = " + util.inspect(result.root.stations, { showHidden: false, depth: null }) + "\n");
+                    console.log("stns result.root.stations.station.name = " + JSON.stringify(result.root.stations[0].station[0].name) + "\n");
+                    */
+                    
+                    console.log("stns result.root.stations = " + util.inspect(result.root.stations, { showHidden: false, depth: null }) + "\n");
 
-                    console.log("stations array length = " + result.root.stations.length);
+                    console.log("stns stations array length = " + result.root.stations.length);
                     var vIndexNum = result.root.stations.length - 1;
-                    console.log("list station number = " + result.root.stations[vIndexNum].station.length);
+                    console.log("stns list station number = " + result.root.stations[vIndexNum].station.length);
                     var vStaNum = result.root.stations[vIndexNum].station.length;
 
                     // fun random numbers for data selection
@@ -74,7 +139,7 @@ router.route('/listAllStations')
 
         };
 
-        http.request(options, callback).end();
+        //http.request(options, callback).end();
 
 
     });
