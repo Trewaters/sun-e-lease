@@ -1,38 +1,24 @@
-<center>
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            <!-- This getlocation() works -->
-            You Are Here <span class="glyphicon glyphicon-star-empty"></span>
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li ng-repeat="station in stations">
-                <a href="#">{{station.stations.station.name}}</a>
-            </li>
-        </ul>
+    <center>
+    <!-- 
+               <br>
+    <p ng-repeat="station in stations">ng-repeat variable station = {{station}}</p>
+    <br>
+    <p ng-repeat="(key,value) in stations">ng-repeat key,value station = {{value.name}}</p>
+    <br>  
+    station = {{stations}}
+            -->
 
-    </div>
+    <label>You Are Here</label>
+    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMap()"></select>
+    <br>
+     {{selectedStationYAH}}
+     <br>
 
-    <!-- station = {{stations}} -->
+    <label>Destination Stations</label>
+    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="aLocation()"></select>
+    <br>
+    {{selectedStationDS}}
 
-    <select onclick="getLocation()">
-        <!-- This getlocation() Does Not work -->
-        <option value="">You Are Here(HTML Drop)</option>
-        <option value="">Test</option>
-    </select>
-
-    <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-            Destination Stations <span class="glyphicon glyphicon-road"></span>
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="#"></a>
-            </li>
-        </ul>
-        <br>
-        <br>
         <p>
             NEXT TRAIN (train times of "You Are Here" station)
         </p>
@@ -44,16 +30,22 @@
             Error : {{error}} Error Code: {{error.code}}
         </div>
 
-        <br> Latitude = {{vLat}}
-        <br> Longitude = {{vLong}}
+        <br> Index Of {{selectedStationYAH}} ( {{vStaDetailsYAH}} )
+        
+        <br> Latitude (DS)= {{vLatDS}}
+        <br> Longitude (DS)= {{vLongDS}}
+        
+        <br> Latitude (YAH)= {{vLatYAH}}
+        <br> Longitude (YAH)= {{vLongYAH}}
+        
         <br> Accuracy = {{vAcc}}
         <br> {{message}}
-
+<!--
         <button onclick="getLocation()">Click for coordinates and a map</button>
 
         <div id="drop"></div>
         <div id="mapholder"></div>
         <div id="error"></div>
-    </div>
+        -->
     </div>
 </center>
