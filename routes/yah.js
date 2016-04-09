@@ -139,7 +139,7 @@ router.route('/listAllStations')
 
         };
 
-        //http.request(options, callback).end();
+        http.request(options, callback).end();
 
 
     });
