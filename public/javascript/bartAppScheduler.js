@@ -111,7 +111,8 @@ $scope.hereMapYAH = function(){
               $scope.vLatYAH = vStaObj.gtfs_latitude[0];
               $scope.vLongYAH = vStaObj.gtfs_longitude[0];
               
-              return $scope.stations[i];
+              //return $scope.stations[i];
+              return $scope.vStaDetailsYAH;
                 
             };
         };
@@ -132,13 +133,28 @@ $scope.hereMapYAH = function(){
               $scope.vLatDS = vStaObj.gtfs_latitude[0];
               $scope.vLongDS = vStaObj.gtfs_longitude[0];
               
-              return $scope.stations[i];
+              //return $scope.stations[i];
+              return $scope.vStaDetailsDS;
                 
             };
         };
     };
 
-$scope.nextTrain = departTime.get({'vOriginStation':'19TH'});
+//$scope.nextTrain = departTime.get({'vOriginStation':'19TH'});
 //$scope.nextTrain = departTime.query({'vOriginStation':$scope.selectedStationYAH})
+$scope.nextTrain = function(){
+    
+    
+    if($scope.selectedStationYAH == '' || $scope.selectedStationYAH == null){
+        //$scope.showNextTrainTime = departTime.get({'vOriginStation':'19TH'});
+        $scope.showNextTrainTime = departTime.query({'vOriginStation':'19TH'});
+    }else{
+        //$scope.showNextTrainTime = departTime.get({'vOriginStation': $scope.selectedStationYAH});
+        $scope.showNextTrainTime = departTime.query({'vOriginStation': $scope.selectedStationYAH});
+    };
+    
+    return $scope.showNextTrainTime;
+}
+
 
 });

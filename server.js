@@ -166,6 +166,7 @@ callback = function(response) {
 var server = app.listen(3000, function() {
     var address = server.address().address;
     var port = server.address().port;
+    var family = server.address().family;
 
-    console.log("app.listen on port 3000, http://%s%s", address, port);
+    console.log("app.listen on port 3000, http://%s%s%s", family, address, port);
 });

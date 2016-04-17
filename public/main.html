@@ -20,10 +20,11 @@
     <p>
         NEXT TRAIN (train times of "You Are Here" station)
     </p>
-    <button type="button">
+    <button type="button" ng-click="nextTrain()">
         Get Train Information for {{selectedStationYAH}}
     </button>
-
+    <br>
+{{showNextTrainTime}}
     <p>
         TRIP DETAILS (between selected stations)
     </p>
