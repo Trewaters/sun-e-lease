@@ -28,6 +28,12 @@
     <p>
         TRIP DETAILS (between selected stations)
     </p>
+        <button type="button" ng-click="getStationSchedule()">
+        Get Station Schedule Information for {{selectedStationYAH}}
+    </button>
+    <br>
+{{stationScheduleAll}}
+<br>
 
     <div ng-show="!showResult()">
         Error : {{error}} Error Code: {{error.code}}
