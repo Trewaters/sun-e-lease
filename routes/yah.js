@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var parseString = require('xml2js').parseString;
 var util = require('util');
+var moment = require('moment');
 
 var config = require('../config_bartapi');
 

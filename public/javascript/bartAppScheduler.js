@@ -169,5 +169,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
         return $scope.stationScheduleAll;
     };
+    
+    $scope.mpSubmit = function(){}; // [NOTE] - stub for later
 
 });

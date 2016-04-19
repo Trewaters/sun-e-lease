@@ -16,6 +16,7 @@
     <label>Destination Stations</label>
     <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="hereMapDS()"></select>
     <br> {{selectedStationDS}}
+</center>
 
     <p>
         NEXT TRAIN (train times of "You Are Here" station)
@@ -35,10 +36,20 @@
 {{stationScheduleAll}}
 <br>
 
+<!-- https://docs.angularjs.org/guide/forms forms reference in angular -->
+<form name="infoSelect">
+    <fieldset>
+    <legend>BART Information:</legend>
+    <input type="radio" name="same" value="NextTrain">NEXT TRAIN (train times of "You Are Here" station)<br>
+    <input type="radio" name="same" value="TripDetails">TRIP DETAILS (between selected stations)<br><br>
+    <input type="submit" value="click to display information" ng-click="mpSubmit()">
+    </fieldset>
+</form>
+
     <div ng-show="!showResult()">
         Error : {{error}} Error Code: {{error.code}}
     </div>
-</center>
+
 <br>YAH value = {{selectedStationYAH}}
 <br>YAH details =( {{vStaDetailsYAH}} )
 <br> Latitude (YAH)= {{vLatYAH}}
