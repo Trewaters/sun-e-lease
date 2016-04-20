@@ -18,33 +18,38 @@
     <br> {{selectedStationDS}}
 </center>
 
-    <p>
-        NEXT TRAIN (train times of "You Are Here" station)
-    </p>
-    <button type="button" ng-click="nextTrain()">
-        Get Train Information for {{selectedStationYAH}}
-    </button>
-    <br>
-{{showNextTrainTime}}
-    <p>
-        TRIP DETAILS (between selected stations)
-    </p>
-        <button type="button" ng-click="getStationSchedule()">
-        Get Station Schedule Information for {{selectedStationYAH}}
-    </button>
-    <br>
-{{stationScheduleAll}}
-<br>
-
 <!-- https://docs.angularjs.org/guide/forms forms reference in angular -->
 <form name="infoSelect">
     <fieldset>
     <legend>BART Information:</legend>
-    <input type="radio" name="same" value="NextTrain">NEXT TRAIN (train times of "You Are Here" station)<br>
-    <input type="radio" name="same" value="TripDetails">TRIP DETAILS (between selected stations)<br><br>
-    <input type="submit" value="click to display information" ng-click="mpSubmit()">
+    <input type="radio" value="NextTrain" ng-model="mpValue">NEXT TRAIN (train times of "You Are Here" station)<br>
+    <input type="radio" value="TripDetails" ng-model="mpValue">TRIP DETAILS (between selected stations)<br><br>
+    <input type="submit" value="click to display information" ng-click="mpSubmit(mpValue)">
     </fieldset>
 </form>
+    <p>
+        NEXT TRAIN (train times of "You Are Here" station)<br>
+        Get Train Information for {{selectedStationYAH}}<br><br>
+        <ol>
+            <li ng-repeat="train in showNextTrainTime[0].etd">
+                <b>{{train.destination[0]}}</b>, 
+                <br><em>departing</em> in {{train.estimate[0].minutes[0]}} minutes,
+                <br><em>heading</em> {{train.estimate[0].direction[0]}}
+                </li>
+        </ol>
+        <!-- Testing
+        name = {{showNextTrainTime[0].name[0]}}<br><br>
+        abbr = {{showNextTrainTime[0].abbr[0]}}<br><br>
+        destination = {{showNextTrainTime[0].etd[0].destination[0]}}<br><br>
+        original = {{showNextTrainTime}}
+        -->
+    </p>
+
+    <p>
+        TRIP DETAILS (between selected stations)<br>
+        Get Station Schedule Information for {{selectedStationYAH}}<br><br>
+        {{stationScheduleAll}}
+    </p>
 
     <div ng-show="!showResult()">
         Error : {{error}} Error Code: {{error.code}}

@@ -6,6 +6,7 @@ var parseString = require('xml2js').parseString;
 var util = require('util');
 var moment = require('moment');
 
+
 var config = require('../config_bartapi');
 
 var http = require('http');
@@ -55,7 +56,7 @@ router.route('/stationSched')
             response.on('end', function (err, result) {
                 parseString(vParsed, function (err, result) {
                     //console.log("stnsched result = " + util.inspect(result, { showHidden: false, depth: 6 }) + "\n");
-                    
+
                     console.log("stnsched result.root.uri = " + result.root.uri + "\n"); // [NOTE] url
                     console.log("stnsched result.root.date = " + result.root.date + "\n"); // [NOTE] date as 'mm/dd/yyyy'
                     console.log("stnsched result.root.sched_num = " + result.root.sched_num + "\n"); // [NOTE] number
@@ -73,7 +74,43 @@ router.route('/stationSched')
 
                     console.log("stnsched result.root.message[0] = " + result.root.message[0] + "\n"); // [NOTE] text
 
-                    return res.send(result.root);
+                    // get upper and lower bounds for the station schedule
+                    var vUpTime;
+                    var vLowTime;
+                    var vTotalTrains;
+                    var vIndexTime;
+
+                    vTotalTrains = result.root.station[0].item.length;
+                    vIndexTime = vTotalTrains - 1;
+                    
+                    vLowTime = result.root.station[0].item[0].$.origTime;
+                    vUpTime = result.root.station[0].item[vIndexTime].$.origTime;
+                    
+                    // convert to station object
+                    var objStnSched;
+
+                    objStnSched = JSON.parse(JSON.stringify(result.root));
+
+                    // compare vLowTime with current time (vNow). Fail gracefully if trains have not started
+                    var vNow = moment();
+                    var vTooEarly;
+
+                    if (moment(vNow).isBefore(vLowTime)) { vTooEarly = true } else { vTooEarly = false };
+                    
+                    // add fields to object
+                    objStnSched.UpTime = vUpTime;
+                    objStnSched.LowTime = vLowTime;
+                    objStnSched.vTooEarly = vTooEarly;
+                    
+                    // convert to JSON with new fields added
+                    vStnSched = JSON.stringify(objStnSched);
+                    
+                    if(vTooEarly){
+                        return res.send(['Train do not start until '+ vLowTime]);
+                    };
+                    
+                    //return res.send(result.root);
+                    return res.send(vStnSched);
                 });
             });
         };
@@ -108,26 +145,26 @@ router.route('/departTimeStation')
                 parseString(vParsed, function (err, result) {
 
                     //console.log("etd result = " + util.inspect(result, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
-                    
-                    
+
+
                     if (result.root.uri == null || result.root.uri == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("etd result.root.uri, BART API url = " + JSON.stringify(result.root.uri) + "\n");
                     };
 
                     if (result.root.date == null || result.root.date == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("etd result.root.date, Date the call was made = " + JSON.stringify(result.root.date) + "\n");
                     };
 
                     if (result.root.time == null || result.root.time == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("etd result.root.time, Time the call was made = " + JSON.stringify(result.root.time) + "\n");
                     };
 
@@ -135,7 +172,7 @@ router.route('/departTimeStation')
                     if (result.root.station[0].etd[0].destination == null || result.root.station[0].etd[0].destination == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("etd result.root.station = " + util.inspect(result.root.station, { showHidden: false, depth: null }) + "\n");
                         console.log("etd station array length, Station of Origin = " + result.root.station.length);
                         var vIndexStation = result.root.station.length - 1;
@@ -150,7 +187,7 @@ router.route('/departTimeStation')
                     if (result.root.station[0].etd[0].abbreviation == null || result.root.station[0].etd[0].abbreviation == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("abbreviation = " + result.root.station[vIndexStation].etd[vIndexEtd].abbreviation);
                     };
 
@@ -158,7 +195,7 @@ router.route('/departTimeStation')
                     if (result.root.station[0].etd[0].estimate[0].minutes == null || result.root.station[0].etd[0].estimate[0].minutes == '') {
                         return res.send(['no trains to display']);
                     } else {
-                        
+
                         console.log("etd estimate array length, Time for next #" + result.root.station[vIndexStation].etd[vIndexEtd].estimate.length + ' lines');
                         var vIndexEstimate = result.root.station[vIndexStation].etd[vIndexEtd].estimate.length - 1;
 

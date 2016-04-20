@@ -170,6 +170,16 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         return $scope.stationScheduleAll;
     };
     
-    $scope.mpSubmit = function(){}; // [NOTE] - stub for later
+    //$scope.mpValue="NextTrain";
+    
+    $scope.mpSubmit = function(value){
+        if(value == "NextTrain"){
+            $scope.nextTrain();
+        };
+        
+        if(value == "TripDetails"){
+            $scope.getStationSchedule();
+        };
+    };
 
 });
