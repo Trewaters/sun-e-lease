@@ -5,6 +5,7 @@ var router = express.Router();
 var parseString = require('xml2js').parseString;
 var util = require('util');
 var moment = require('moment');
+var geo = require('geolib'); // not being used at the moment 4/20/2016. added for geoLocation methods. ( https://www.npmjs.com/package/geolib )
 
 
 var config = require('../config_bartapi');
@@ -32,6 +33,12 @@ router.route('/here')
         });
      */
 
+// Nearest Station to current location
+router.route('/nearestStation')
+    .get(function(req,res){
+        
+    });
+    
 // Get Station Schedule information
 router.route('/stationSched')
     .get(function (req, res) {

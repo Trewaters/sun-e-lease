@@ -34,6 +34,11 @@ app.factory('stationSchedule', function ($resource, $q, $rootScope) {
     // required parameter 'vOriginStation' as string
 });
 
+app.factory('nearStation', function($resource, $q, $rootScope){
+    return $resource('/yah/nearestStation',{});
+    //required parameter ?
+});
+
 //---
 // controllers
 //---
@@ -180,6 +185,10 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         if(value == "TripDetails"){
             $scope.getStationSchedule();
         };
+    };
+    
+    $scope.NearestStation = function(){
+        
     };
 
 });
