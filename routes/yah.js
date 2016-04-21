@@ -33,10 +33,19 @@ router.route('/here')
         });
      */
 
+// () https://www.npmjs.com/package/geolib ) reference
 // Nearest Station to current location
 router.route('/nearestStation')
     .get(function(req,res){
         
+        geolib.getDistance(
+            /*
+            
+            {latitude: 51.5103, longitude: 7.49347},
+            {latitude: "51° 31' N", longitude: "7° 28' E"}
+            
+            */
+        );
     });
     
 // Get Station Schedule information

@@ -42,7 +42,7 @@ app.factory('nearStation', function($resource, $q, $rootScope){
 //---
 // controllers
 //---
-app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule) {
+app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule, nearStation) {
 
     $scope.selectedStationYAH = "";
     $scope.vLatYAH = "0";
@@ -187,8 +187,21 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         };
     };
     
+    
+    
+    
     $scope.NearestStation = function(){
+        // get distance, in meters, of the station
+        // nearStation.get()
         
+        /*
+        // use the variables that have already been created to capture station lat/long data.
+        
+        $scope.vLatYAH = "0";
+    $scope.vLongYAH = "0";
+    $scope.vLatDS = "0";
+    $scope.vLongDS = "0";
+    */
     };
 
 });
