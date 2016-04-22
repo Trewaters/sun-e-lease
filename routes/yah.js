@@ -2,6 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
+var app = express();
 var parseString = require('xml2js').parseString;
 var util = require('util');
 var moment = require('moment');
@@ -37,15 +38,22 @@ router.route('/here')
 // Nearest Station to current location
 router.route('/nearestStation')
     .get(function(req,res){
+        var vStSchAll;
+        var vCurPosition = {};
         
-        geolib.getDistance(
+        vCurPosition = req.query.vCurPosition;
+        
+        // extract long/lat from "vLoc" & "vStSchAll"
+        
+        
+        
             /*
-            
+            geolib.getDistance(
             {latitude: 51.5103, longitude: 7.49347},
             {latitude: "51° 31' N", longitude: "7° 28' E"}
-            
+            );
             */
-        );
+        
     });
     
 // Get Station Schedule information

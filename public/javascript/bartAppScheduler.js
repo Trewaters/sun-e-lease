@@ -34,8 +34,8 @@ app.factory('stationSchedule', function ($resource, $q, $rootScope) {
     // required parameter 'vOriginStation' as string
 });
 
-app.factory('nearStation', function($resource, $q, $rootScope){
-    return $resource('/yah/nearestStation',{});
+app.factory('nearStation', function ($resource, $q, $rootScope) {
+    return $resource('/yah/nearestStation', {});
     //required parameter ?
 });
 
@@ -161,10 +161,10 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
         if ($scope.showNextTrainTime[0] == "no trains to display") {
             $scope.showNextTrainTime = 'Nothing to show now. Please try again later';
-            
+
             return $scope.showNextTrainTime;
         };
-        
+
         return $scope.showNextTrainTime;
     };
 
@@ -174,34 +174,51 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
         return $scope.stationScheduleAll;
     };
-    
+
     //$scope.mpValue="NextTrain";
-    
-    $scope.mpSubmit = function(value){
-        if(value == "NextTrain"){
+
+    $scope.mpSubmit = function (value) {
+        if (value == "NextTrain") {
             $scope.nextTrain();
         };
-        
-        if(value == "TripDetails"){
+
+        if (value == "TripDetails") {
             $scope.getStationSchedule();
         };
     };
-    
-    
-    
-    
-    $scope.NearestStation = function(){
-        // get distance, in meters, of the station
-        // nearStation.get()
+
+    //
+    $scope.NearestStation = function () {
+        var vStSchAll = '';
+        var vCurPosition = '';
+        var vYAH;
+
+        // if "$scope.stationScheduleAll" !null use for all stations and their details. The detail we care about is the lat and long.
+        if ($scope.stationScheduleAll == null || $scope.stationScheduleAll == ''){
+            vStSchAll = $scope.getStationSchedule;
+        };
         
-        /*
-        // use the variables that have already been created to capture station lat/long data.
+        // if "$scope.aLocation" !null, pass on YAH lat/long data. use function "aShowPosition".
+        if ($scope.aLocation == null || $scope.aLocation == ''){
+            $scope.aLocation;
+            vCurPosition = {'latitude':$scope.vLatYAH,'longitude':$scope.vLongYAH};
+        };
+        
+        // pass the 2 coordinate objects, {lat,long}*2, to the API "nearStation.get()"
+        // API returns the nearest BART station by distance from the station, in meters
+        vYAH = nearStation.get(vCurPosition);       
+        
+        // add to the ng-selected for YAH in the dropdown
+        // $scope.NearStationCalc = vYAH;
+/*
+        // use the variables that have already been created to capture station lat/long coordinate data.
         
         $scope.vLatYAH = "0";
-    $scope.vLongYAH = "0";
-    $scope.vLatDS = "0";
-    $scope.vLongDS = "0";
-    */
+        $scope.vLongYAH = "0";
+        $scope.vLatDS = "0";
+        $scope.vLongDS = "0";
+*/
+        
     };
 
 });
