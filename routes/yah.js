@@ -34,28 +34,87 @@ router.route('/here')
         });
      */
 
-// () https://www.npmjs.com/package/geolib ) reference
+// ( https://www.npmjs.com/package/geolib ) reference
 // Nearest Station to current location
 router.route('/nearestStation')
-    .get(function(req,res){
+    .get(function (req, res) {
+        var vParsed;
         var vStSchAll;
-        var vCurPosition = {};
-        
-        vCurPosition = req.query.vCurPosition;
-        
+
+        var vCurPosLat;
+        var vCurPosLong;
+
+        var vDesLat;
+        var vDesLong;
+
+        //console.log("req.params = " + util.inspect(req.params, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
+
         // extract long/lat from "vLoc" & "vStSchAll"
+        vCurPosLat = req.query.latitude;
+        vCurPosLong = req.query.longitude;
         
-        
-        
-            /*
-            geolib.getDistance(
-            {latitude: 51.5103, longitude: 7.49347},
-            {latitude: "51° 31' N", longitude: "7° 28' E"}
-            );
-            */
-        
+        console.log("nearestStation, latitude = " + req.query.latitude  + ", longitude = " + req.query.longitude + "\n"); // [DEBUG]
+
+        var nearStns_options = {
+            host: 'api.bart.gov',
+            path: '/api/stn.aspx?cmd=stns&key=' + config.bart.client
+        };
+
+        var nearStns_callback = function (response) {
+
+            response.on('data', function (chunk) {
+                vParsed += chunk;
+            });
+
+            response.on('end', function () {
+                parseString(vParsed, function (err, result) {
+                    //return res.send(result.root.stations[0].station)
+                    vStSchAll = result;
+
+                    //loop through the array vStSchAll for each of the stations lat and longs
+                    var vShortestDist = 0;
+                    var vShortestSta = '';
+                    
+                    console.log("result = " + result + "\n"); // [DEBUG]
+                    console.log("vStSchAll = " + vStSchAll + "\n"); // [DEBUG]
+
+                    for (var i = 0; i < vStSchAll.root.stations.length; i++) {
+
+                        vDist = geo.getDistance(
+                            { latitude: vCurPosLat, longitude: vCurPosLong },
+                            { latitude: vStSchAll.root.stations[i].station.gtfs_latitude, longitude: vStSchAll.root.stations[i].station.gtfs_longitude }
+                        );
+
+                        // [NOTE] - I am not dealing with teh reare case where two or more stations are equally distant from you
+                        if (vShortestDist < vDist) {
+                            vShortestDist = vDist;
+                            vShortestSta = vStSchAll.root.stations[i].station.name;
+                        };
+                        if (vStSchAll.length - 1 === i) {
+                            return res.send({ 'nearSta': vShortestSta, 'nearDist': vShortestDist });
+                        };
+                    };
+                    /*
+                            
+                    */
+
+                    /*
+                    // [NOTE] - geolib.getDistance(object start, object end[, int accuracy, int precision])
+                    
+                    geolib.getDistance(
+                    {latitude: 51.5103, longitude: 7.49347},
+                    {latitude: "51° 31' N", longitude: "7° 28' E"}
+                    );
+                    */
+
+                });
+            });
+        };
+
+        http.request(nearStns_options, nearStns_callback).end();
+
     });
-    
+
 // Get Station Schedule information
 router.route('/stationSched')
     .get(function (req, res) {
@@ -106,10 +165,10 @@ router.route('/stationSched')
 
                     vTotalTrains = result.root.station[0].item.length;
                     vIndexTime = vTotalTrains - 1;
-                    
+
                     vLowTime = result.root.station[0].item[0].$.origTime;
                     vUpTime = result.root.station[0].item[vIndexTime].$.origTime;
-                    
+
                     // convert to station object
                     var objStnSched;
 
@@ -120,19 +179,19 @@ router.route('/stationSched')
                     var vTooEarly;
 
                     if (moment(vNow).isBefore(vLowTime)) { vTooEarly = true } else { vTooEarly = false };
-                    
+
                     // add fields to object
                     objStnSched.UpTime = vUpTime;
                     objStnSched.LowTime = vLowTime;
                     objStnSched.vTooEarly = vTooEarly;
-                    
+
                     // convert to JSON with new fields added
                     vStnSched = JSON.stringify(objStnSched);
-                    
-                    if(vTooEarly){
-                        return res.send(['Train do not start until '+ vLowTime]);
+
+                    if (vTooEarly) {
+                        return res.send(['Train do not start until ' + vLowTime]);
                     };
-                    
+
                     //return res.send(result.root);
                     return res.send(vStnSched);
                 });

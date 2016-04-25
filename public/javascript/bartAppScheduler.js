@@ -58,15 +58,17 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
     /*
         // [NOTE] 4/9/2016 - not using this at the moment
-        $scope.aShowPosition = function(position) {
+            $scope.aShowPosition = function (position) {
             $scope.vLatYAH = position.coords.latitude;
             $scope.vLongYAH = position.coords.longitude;
             //$scope.vAccYAH = position.coords.accuracy;
             $scope.$apply();
-        };
     
-        // [NOTE] 4/9/2016 - not using this at the moment
-        $scope.aLocation = function() {
+            console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
+        };
+        
+            // [NOTE] 4/9/2016 - not using this at the moment
+        $scope.aLocation = function () {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition($scope.aShowPosition)
             } else {
@@ -192,33 +194,53 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         var vStSchAll = '';
         var vCurPosition = '';
         var vYAH;
+        var position;
 
-        // if "$scope.stationScheduleAll" !null use for all stations and their details. The detail we care about is the lat and long.
-        if ($scope.stationScheduleAll == null || $scope.stationScheduleAll == ''){
-            vStSchAll = $scope.getStationSchedule;
+        console.log("enter NearestStation "); // [DEBUG]
+
+        /*
+                // [NOTE] - I feel like I need to do this on the server side.
+                // if "$scope.stationScheduleAll" !null use for all stations and their details. The detail we care about is the lat and long.
+                if ($scope.stationScheduleAll == null || $scope.stationScheduleAll == ''){
+                    vStSchAll = $scope.getStationSchedule;
+                };
+        */
+
+        // pass on YAH lat/long data. 
+        if (navigator.geolocation) {
+            
+            // reference ( http://stackoverflow.com/questions/31082763/javascript-geolocation-error-callback-function-error ) error on getCurrentPosition
+            navigator.geolocation.getCurrentPosition(position)
+            
+            $scope.vLatYAH = position.coords.latitude;
+            $scope.vLongYAH = position.coords.longitude;
+            //$scope.vAccYAH = vCurPosition.coords.accuracy;
+            
+            console.log("vCurPosition, latitude = " + $scope.vLatYAH + ", longitude = " + $scope.vLongYAH + "\n"); // [DEBUG]
+            
+            vCurPosition = { 'latitude': $scope.vLatYAH, 'longitude': $scope.vLongYAH };
+            
+            vYAH = nearStation.get(vCurPosition);
+            
+        } else {
+            $scope.error = "Angular Geolocation is not supported by this browser.";
         };
-        
-        // if "$scope.aLocation" !null, pass on YAH lat/long data. use function "aShowPosition".
-        if ($scope.aLocation == null || $scope.aLocation == ''){
-            $scope.aLocation;
-            vCurPosition = {'latitude':$scope.vLatYAH,'longitude':$scope.vLongYAH};
-        };
-        
+
         // pass the 2 coordinate objects, {lat,long}*2, to the API "nearStation.get()"
         // API returns the nearest BART station by distance from the station, in meters
-        vYAH = nearStation.get(vCurPosition);       
-        
+        //vYAH = nearStation.get(vCurPosition);       
+
         // add to the ng-selected for YAH in the dropdown
-        // $scope.NearStationCalc = vYAH;
-/*
-        // use the variables that have already been created to capture station lat/long coordinate data.
-        
-        $scope.vLatYAH = "0";
-        $scope.vLongYAH = "0";
-        $scope.vLatDS = "0";
-        $scope.vLongDS = "0";
-*/
-        
+        //$scope.NearStationCalc = vYAH.nearSta;
+        /*
+                // use the variables that have already been created to capture station lat/long coordinate data.
+                
+                $scope.vLatYAH = "0";
+                $scope.vLongYAH = "0";
+                $scope.vLatDS = "0";
+                $scope.vLongDS = "0";
+        */
+
     };
 
 });

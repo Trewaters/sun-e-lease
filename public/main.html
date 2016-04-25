@@ -40,13 +40,16 @@
                 <ul>
                     <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
                         <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
-                        <em>{{estimate.length[0]}} cars long
+                        <em>{{estimate.length[0]}} cars long</em>
                     </li>
                 </ul>
                 
                 </li>
                 
         </ol>
+        
+        Near Train Station to you is <b>{{NearStationCalc}}</b><br>
+        <button type="button" ng-click="NearestStation()">Click here for nearest</button>
         <!-- Testing
         name = {{showNextTrainTime[0].name[0]}} <br><br>
         abbr = {{showNextTrainTime[0].abbr[0]}} <br><br>
