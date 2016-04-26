@@ -22,52 +22,53 @@
 <!-- https://docs.angularjs.org/guide/forms forms reference in angular -->
 <form name="infoSelect">
     <fieldset>
-    <legend>BART Information:</legend>
-    <input type="radio" value="NextTrain" ng-model="mpValue">NEXT TRAIN (train times of "You Are Here" station)<br>
-    <input type="radio" value="TripDetails" ng-model="mpValue">TRIP DETAILS (between selected stations)<br><br>
-    <input type="submit" value="click to display information" ng-click="mpSubmit(mpValue)">
+        <legend>BART Information:</legend>
+        <input type="radio" value="NextTrain" ng-model="mpValue">NEXT TRAIN (train times of "You Are Here" station)<br>
+        <input type="radio" value="TripDetails" ng-model="mpValue">TRIP DETAILS (between selected stations)<br><br>
+        <input type="submit" value="click to display information" ng-click="mpSubmit(mpValue)">
     </fieldset>
 </form>
-    <p>
-        NEXT TRAIN (train times of "You Are Here" station)<br>
-        Get Train Information for {{selectedStationYAH[0]}}<br><br>
-        <ol>
-            <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index">
-                
-                <b>{{train.destination[0]}}</b>,
-                <br><em>heading</em> {{train.estimate[0].direction[0]}}
-                
-                <ul>
-                    <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
-                        <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
-                        <em>{{estimate.length[0]}} cars long</em>
-                    </li>
-                </ul>
-                
-                </li>
-                
-        </ol>
-        
-        Near Train Station to you is <b>{{NearStationCalc}}</b><br>
-        <button type="button" ng-click="NearestStation()">Click here for nearest</button>
-        <!-- Testing
+
+NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for {{selectedStationYAH[0]}}<br><br>
+<ol>
+    <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index">
+
+        <b>{{train.destination[0]}}</b>,
+        <br><em>heading</em> {{train.estimate[0].direction[0]}}
+
+        <ul>
+            <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
+                <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
+                <em>{{estimate.length[0]}} cars long</em>
+            </li>
+        </ul>
+
+    </li>
+
+</ol>
+
+<p>
+    Near Train Station to you is <b>{{NearStationCalc}}</b><br>
+    <button type="button" ng-click="NearestStation()">Click here for nearest</button>
+    <br> {{nearSta}}
+    <br> {{nearDist}}<br>
+    <!-- Testing
         name = {{showNextTrainTime[0].name[0]}} <br><br>
         abbr = {{showNextTrainTime[0].abbr[0]}} <br><br>
         destination = {{showNextTrainTime[0].etd[0].destination[0]}} <br><br>
         How many trains at this station = {{showNextTrainTime[0].etd.length}} <br><br>
         original = {{showNextTrainTime}}
         -->
-    </p>
+</p>
 
-    <p>
-        TRIP DETAILS (between selected stations)<br>
-        Get Station Schedule Information for {{selectedStationYAH[0]}}<br><br>
-        {{stationScheduleAll}}
-    </p>
+<p>
+    TRIP DETAILS (between selected stations)<br> Get Station Schedule Information for {{selectedStationYAH[0]}}
+    <br><br> {{stationScheduleAll}}
+</p>
 
-    <div ng-show="!showResult()">
-        Error : {{error}} Error Code: {{error.code}}
-    </div>
+<div ng-show="!showResult()">
+    Error : {{error}} Error Code: {{error.code}}
+</div>
 
 <br>YAH value = {{selectedStationYAH}}
 <br>YAH details =( {{vStaDetailsYAH}} )

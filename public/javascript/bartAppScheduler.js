@@ -8,6 +8,14 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource'])
             .otherwise({
                 redirectTo: '/'
             });
+    })
+    .run(function($rootScope){
+        /*
+     $scope.vStaDetailsYAH = $scope.nearSta;
+            $scope.vLatYAH = $scope.nearLat;
+            $scope.vLongYAH = $scope.nearLong;
+
+       */
     });
 
 //---
@@ -36,7 +44,7 @@ app.factory('stationSchedule', function ($resource, $q, $rootScope) {
 
 app.factory('nearStation', function ($resource, $q, $rootScope) {
     return $resource('/yah/nearestStation', {});
-    //required parameter ?
+    //required parameter {'latitude': vLat, 'longitude': vLong}
 });
 
 //---
@@ -55,6 +63,8 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     //$scope.vAccDS = "0";
 
     $scope.error = "";
+    
+    var vDone = false;
 
     /*
         // [NOTE] 4/9/2016 - not using this at the moment
@@ -109,6 +119,17 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
     $scope.hereMapYAH = function () {
         // current location abbreviation = $scope.selectedStationYAH
+        
+        /* load nearest station when browser loads.
+        if(vDone == true){
+            
+            $scope.vStaDetailsYAH = $scope.nearSta;
+            $scope.vLatYAH = $scope.nearLat;
+            $scope.vLongYAH = $scope.nearLong;
+
+            return $scope.vStaDetailsYAH;
+        };
+        */
         for (var i = 0; i < $scope.stations.length; i++) {
 
             var vStaObj = JSON.parse(JSON.stringify($scope.stations[i]));
@@ -191,12 +212,8 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
     //
     $scope.NearestStation = function () {
-        var vStSchAll = '';
         var vCurPosition = '';
-        var vYAH;
         var position;
-
-        console.log("enter NearestStation "); // [DEBUG]
 
         /*
                 // [NOTE] - I feel like I need to do this on the server side.
@@ -212,12 +229,22 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
             //$scope.vAccYAH = position.coords.accuracy;
             $scope.$apply();
     
-            console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
-            console.log("aShowPosition, vLatYAH = " + $scope.vLatYAH + ", vLongYAH = " + $scope.vLongYAH + "\n"); // [DEBUG]
+            //console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
+            //console.log("aShowPosition, vLatYAH = " + $scope.vLatYAH + ", vLongYAH = " + $scope.vLongYAH + "\n"); // [DEBUG]
             
             vCurPosition = { 'latitude': $scope.vLatYAH, 'longitude': $scope.vLongYAH };
             
-            vYAH = nearStation.get(vCurPosition);
+            nearStation.get(vCurPosition, function(value){
+                $scope.nearSta = value.nearSta ;
+                $scope.nearDist = value.nearDist;
+                $scope.nearAbbr = value.nearAbbr;
+                $scope.nearLat = value.nearLat;
+                $scope.nearLong = value.nearLong;
+                console.log("$scope.nearSta = " + $scope.nearSta + ", $scope.nearDist = " + $scope.nearDist + ", $scope.nearAbbr = " + $scope.nearAbbr + "\n"); // [DEBUG]
+                vDone = true;
+            });
+            
+            //console.log("$scope.vYAH = " + JSON.stringify($scope.vYAH) + "\n"); // [DEBUG]
         };
 
         // pass on YAH lat/long data. 
