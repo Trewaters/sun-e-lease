@@ -205,22 +205,25 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
                     vStSchAll = $scope.getStationSchedule;
                 };
         */
-
-        // pass on YAH lat/long data. 
-        if (navigator.geolocation) {
-            
-            // reference ( http://stackoverflow.com/questions/31082763/javascript-geolocation-error-callback-function-error ) error on getCurrentPosition
-            navigator.geolocation.getCurrentPosition(position)
-            
+        
+        $scope.aShowPosition = function (position) {
             $scope.vLatYAH = position.coords.latitude;
             $scope.vLongYAH = position.coords.longitude;
-            //$scope.vAccYAH = vCurPosition.coords.accuracy;
-            
-            console.log("vCurPosition, latitude = " + $scope.vLatYAH + ", longitude = " + $scope.vLongYAH + "\n"); // [DEBUG]
+            //$scope.vAccYAH = position.coords.accuracy;
+            $scope.$apply();
+    
+            console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
+            console.log("aShowPosition, vLatYAH = " + $scope.vLatYAH + ", vLongYAH = " + $scope.vLongYAH + "\n"); // [DEBUG]
             
             vCurPosition = { 'latitude': $scope.vLatYAH, 'longitude': $scope.vLongYAH };
             
             vYAH = nearStation.get(vCurPosition);
+        };
+
+        // pass on YAH lat/long data. 
+        if (navigator.geolocation) {
+            
+            navigator.geolocation.getCurrentPosition($scope.aShowPosition);
             
         } else {
             $scope.error = "Angular Geolocation is not supported by this browser.";

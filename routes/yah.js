@@ -38,14 +38,16 @@ router.route('/here')
 // Nearest Station to current location
 router.route('/nearestStation')
     .get(function (req, res) {
-        var vParsed;
-        var vStSchAll;
+        var vParsed='';
+        var vStSchAll='';
 
         var vCurPosLat;
         var vCurPosLong;
 
         var vDesLat;
         var vDesLong;
+        
+        var vShortestDist=9999;
 
         //console.log("req.params = " + util.inspect(req.params, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
 
@@ -70,27 +72,45 @@ router.route('/nearestStation')
                 parseString(vParsed, function (err, result) {
                     //return res.send(result.root.stations[0].station)
                     vStSchAll = result;
+                    
+                    if(err){console.log('err = ' + err)}; // [DEBUG]
 
                     //loop through the array vStSchAll for each of the stations lat and longs
                     var vShortestDist = 0;
                     var vShortestSta = '';
                     
-                    console.log("result = " + result + "\n"); // [DEBUG]
-                    console.log("vStSchAll = " + vStSchAll + "\n"); // [DEBUG]
+                    //console.log("result = " + util.inspect(result, { showHidden: false, depth: 3 }) + "\n"); // [DEBUG]
+                    console.log("vStSchAll = " + util.inspect(vStSchAll, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
+                    console.log('vStSchAll.root.stations.length = ' + vStSchAll.root.stations[0].station.length); // [DEBUG]
 
-                    for (var i = 0; i < vStSchAll.root.stations.length; i++) {
-
+                    for (var i = 0; i < vStSchAll.root.stations[0].station.length ; i++) {
+                        
+                        console.log('vStSchAll.root.stations[' + i + '].station[0].gtfs_latitude[0] =' + vStSchAll.root.stations[0].station[i].gtfs_latitude[0] + '\nlongitude: vStSchAll.root.stations[' + i + '].station[0].gtfs_longitude[0] = ' +  vStSchAll.root.stations[0].station[i].gtfs_longitude[0]); //[DEBUG]
+                        
                         vDist = geo.getDistance(
                             { latitude: vCurPosLat, longitude: vCurPosLong },
-                            { latitude: vStSchAll.root.stations[i].station.gtfs_latitude, longitude: vStSchAll.root.stations[i].station.gtfs_longitude }
+                            { latitude: vStSchAll.root.stations[0].station[i].gtfs_latitude[0], longitude: vStSchAll.root.stations[0].station[i].gtfs_longitude[0] }
                         );
+                        
+                        /*
+                       vDist = geo.getDistance(
+                            { latitude: 37.8756591, longitude: -122.2923356000002 },
+                            { latitude: 37.87404, longitude: -122.283451 }
+                        );
+                        */
 
-                        // [NOTE] - I am not dealing with teh reare case where two or more stations are equally distant from you
-                        if (vShortestDist < vDist) {
+                        console.log('vShortestDist = ' + vShortestDist); // [DEBUG]
+                        console.log('vDist = ' + vDist); // [DEBUG]
+                        // [NOTE] - I am not dealing with the rare case where two or more stations are equally distant from you
+                        if (vShortestDist > vDist) {
                             vShortestDist = vDist;
-                            vShortestSta = vStSchAll.root.stations[i].station.name;
+                            vShortestSta = vStSchAll.root.stations[0].station[i].name;
+                            console.log('vStSchAll.root.stations[0].station.name '+ vStSchAll.root.stations[0].station[i].name); // [DEBUG]
                         };
-                        if (vStSchAll.length - 1 === i) {
+                        if (vStSchAll.root.stations[0].station.length - 1 === i) {
+                            
+                            console.log('nearSta '+ vShortestSta + ', '+ 'nearDist' + vShortestDist); // [DEBUG]
+                            
                             return res.send({ 'nearSta': vShortestSta, 'nearDist': vShortestDist });
                         };
                     };
@@ -111,7 +131,7 @@ router.route('/nearestStation')
             });
         };
 
-        http.request(nearStns_options, nearStns_callback).end();
+        http.request(nearStns_options,nearStns_callback).end();
 
     });
 
