@@ -8,14 +8,6 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource'])
             .otherwise({
                 redirectTo: '/'
             });
-    })
-    .run(function($rootScope){
-        /*
-     $scope.vStaDetailsYAH = $scope.nearSta;
-            $scope.vLatYAH = $scope.nearLat;
-            $scope.vLongYAH = $scope.nearLong;
-
-       */
     });
 
 //---
@@ -55,7 +47,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     $scope.selectedStationYAH = "";
     $scope.vLatYAH = "0";
     $scope.vLongYAH = "0";
-    //$scope.vAccYAH = "0";
+    $scope.vAccYAH = "0";
 
     $scope.selectedStationDS = "";
     $scope.vLatDS = "0";
@@ -63,7 +55,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     //$scope.vAccDS = "0";
 
     $scope.error = "";
-    
+
     var vDone = false;
 
     /*
@@ -115,27 +107,28 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     // list all stations as an array
     // key values are all arrays also
     // keys = [ name, abbr, gtfs_latitude, gtfs_longitude, address, city, county, state, zipcode ]
-    $scope.stations = listStations.query();
+    $scope.stations = listStations.query(function () {
+        $scope.NearestStation();
+
+        //$scope.vStaDetailsYAH = $scope.nearSta;
+        //$scope.vLatYAH = $scope.nearLat;
+        //$scope.vLongYAH = $scope.nearLong;
+        //$scope.selectedStationYAH = $scope.nearAbbr;
+
+        //return $scope.vStaDetailsYAH;
+    });
 
     $scope.hereMapYAH = function () {
         // current location abbreviation = $scope.selectedStationYAH
-        
-        /* load nearest station when browser loads.
-        if(vDone == true){
-            
-            $scope.vStaDetailsYAH = $scope.nearSta;
-            $scope.vLatYAH = $scope.nearLat;
-            $scope.vLongYAH = $scope.nearLong;
+        var strSelectedStationYAH;
 
-            return $scope.vStaDetailsYAH;
-        };
-        */
         for (var i = 0; i < $scope.stations.length; i++) {
 
             var vStaObj = JSON.parse(JSON.stringify($scope.stations[i]));
 
             var strStaObj = JSON.stringify(vStaObj.abbr);
-            var strSelectedStationYAH = JSON.stringify($scope.selectedStationYAH);
+
+            strSelectedStationYAH = JSON.stringify($scope.selectedStationYAH);
 
             if (strStaObj === strSelectedStationYAH) {
 
@@ -222,44 +215,35 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
                     vStSchAll = $scope.getStationSchedule;
                 };
         */
-        
+
         $scope.aShowPosition = function (position) {
-            $scope.vLatYAH = position.coords.latitude;
-            $scope.vLongYAH = position.coords.longitude;
-            //$scope.vAccYAH = position.coords.accuracy;
-            $scope.$apply();
-    
-            //console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
-            //console.log("aShowPosition, vLatYAH = " + $scope.vLatYAH + ", vLongYAH = " + $scope.vLongYAH + "\n"); // [DEBUG]
-            
-            vCurPosition = { 'latitude': $scope.vLatYAH, 'longitude': $scope.vLongYAH };
-            
-            nearStation.get(vCurPosition, function(value){
-                $scope.nearSta = value.nearSta ;
+            $scope.nearLat = position.coords.latitude;
+            $scope.nearLong = position.coords.longitude;
+            $scope.nearAcc = position.coords.accuracy;
+
+            vCurPosition = { 'latitude': $scope.nearLat, 'longitude': $scope.nearLong };
+
+            nearStation.get(vCurPosition, function (value) {
+
+                $scope.nearSta = value.nearSta;
                 $scope.nearDist = value.nearDist;
                 $scope.nearAbbr = value.nearAbbr;
                 $scope.nearLat = value.nearLat;
                 $scope.nearLong = value.nearLong;
-                console.log("$scope.nearSta = " + $scope.nearSta + ", $scope.nearDist = " + $scope.nearDist + ", $scope.nearAbbr = " + $scope.nearAbbr + "\n"); // [DEBUG]
-                vDone = true;
+
             });
-            
-            //console.log("$scope.vYAH = " + JSON.stringify($scope.vYAH) + "\n"); // [DEBUG]
+
         };
 
-        // pass on YAH lat/long data. 
         if (navigator.geolocation) {
-            
+
             navigator.geolocation.getCurrentPosition($scope.aShowPosition);
-            
+
         } else {
             $scope.error = "Angular Geolocation is not supported by this browser.";
         };
 
-        // pass the 2 coordinate objects, {lat,long}*2, to the API "nearStation.get()"
-        // API returns the nearest BART station by distance from the station, in meters
-        //vYAH = nearStation.get(vCurPosition);       
-
+        
         // add to the ng-selected for YAH in the dropdown
         //$scope.NearStationCalc = vYAH.nearSta;
         /*

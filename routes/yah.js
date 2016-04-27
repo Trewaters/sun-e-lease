@@ -68,56 +68,35 @@ router.route('/nearestStation')
 
             response.on('end', function () {
                 parseString(vParsed, function (err, result) {
-                    //return res.send(result.root.stations[0].station)
+                    
                     vStSchAll = result;
 
                     if (err) { console.log('err = ' + err) }; // [DEBUG]
 
-                    //loop through the array vStSchAll for each of the stations lat and longs
                     var vShortestDist = 9999;
                     var vShortestSta = '';
                     var vShortestAbbr = '';
                     var vShortestLong;
                     var vShortestLat;
 
-                    //console.log("result = " + util.inspect(result, { showHidden: false, depth: 3 }) + "\n"); // [DEBUG]
-                    //console.log("vStSchAll = " + util.inspect(vStSchAll, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
-                    //console.log('vStSchAll.root.stations.length = ' + vStSchAll.root.stations[0].station.length + "\n"); // [DEBUG]
-
                     for (var i = 0; i < vStSchAll.root.stations[0].station.length; i++) {
-
-                        //console.log('vStSchAll.root.stations[' + i + '].station[0].gtfs_latitude[0] =' + vStSchAll.root.stations[0].station[i].gtfs_latitude[0] + '\nlongitude: vStSchAll.root.stations[' + i + '].station[0].gtfs_longitude[0] = ' +  vStSchAll.root.stations[0].station[i].gtfs_longitude[0] + "\n"); //[DEBUG]
 
                         vDist = geo.getDistance(
                             { latitude: vCurPosLat, longitude: vCurPosLong },
                             { latitude: vStSchAll.root.stations[0].station[i].gtfs_latitude[0], longitude: vStSchAll.root.stations[0].station[i].gtfs_longitude[0] }
                         );
-
-                        /*
-                       vDist = geo.getDistance(
-                            { latitude: 37.8756591, longitude: -122.2923356000002 },
-                            { latitude: 37.87404, longitude: -122.283451 }
-                        );
-                        */
-
-                        console.log('vShortestDist = ' + vShortestDist + "\n"); // [DEBUG]
-                        console.log('vDist outside = ' + vDist + "\n"); // [DEBUG]
+                       
                         // [NOTE] - I am not dealing with the rare case where two or more stations are equally distant from you
                         if (vShortestDist > vDist) {
-                            //console.log('vDist inside = ' + vDist + "\n"); // [DEBUG]
-
+                            
                             vShortestDist = vDist;
                             vShortestSta = vStSchAll.root.stations[0].station[i].name[0];
                             vShortestAbbr = vStSchAll.root.stations[0].station[i].abbr[0];
                             vShortestLat = vStSchAll.root.stations[0].station[i].gtfs_latitude[0];
                             vShortestLong = vStSchAll.root.stations[0].station[i].gtfs_longitude[0];
-
-                            //console.log('vStSchAll.root.stations[0].station.name = '+ vStSchAll.root.stations[0].station[i].name + "\n"); // [DEBUG]
+                            
                         };
                         if (vStSchAll.root.stations[0].station.length - 1 == i) {
-
-                            //console.log('nearSta '+ vShortestSta + ', '+ 'nearDist' + vShortestDist + "\n"); // [DEBUG]
-
                             return res.json({ 'nearSta': vShortestSta, 'nearDist': vShortestDist, 'nearAbbr': vShortestAbbr , 'nearLat': vShortestLat, 'nearLong': vShortestLong});
                         };
                     };
