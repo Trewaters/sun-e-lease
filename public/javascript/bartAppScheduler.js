@@ -242,19 +242,5 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         } else {
             $scope.error = "Angular Geolocation is not supported by this browser.";
         };
-
-        
-        // add to the ng-selected for YAH in the dropdown
-        //$scope.NearStationCalc = vYAH.nearSta;
-        /*
-                // use the variables that have already been created to capture station lat/long coordinate data.
-                
-                $scope.vLatYAH = "0";
-                $scope.vLongYAH = "0";
-                $scope.vLatDS = "0";
-                $scope.vLongDS = "0";
-        */
-
     };
-
 });
