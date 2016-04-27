@@ -39,6 +39,11 @@ app.factory('nearStation', function ($resource, $q, $rootScope) {
     //required parameter {'latitude': vLat, 'longitude': vLong}
 });
 
+app.factory('detailsDepart', function($resource,$q, $rootScope){
+    return $resource('/yah/tripDetailsDepart', {});
+    // required parameter ??
+});
+
 //---
 // controllers
 //---
@@ -185,6 +190,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     };
 
     $scope.getStationSchedule = function () {
+        // show all trains that are travelling through selected station
 
         $scope.stationScheduleAll = stationSchedule.get({ 'vOriginStation': $scope.selectedStationYAH });
 
@@ -199,7 +205,10 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         };
 
         if (value == "TripDetails") {
-            $scope.getStationSchedule();
+            //$scope.getStationSchedule();
+            
+            // get arrive
+            
         };
     };
 

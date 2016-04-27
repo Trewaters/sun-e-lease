@@ -34,7 +34,12 @@ router.route('/here')
         });
      */
 
-// ( https://www.npmjs.com/package/geolib ) reference
+// Trip details for a specified departure time
+router.route('tripDetailsDepart')
+    .get(function(req,res){
+    
+});
+
 // Nearest Station to current location
 router.route('/nearestStation')
     .get(function (req, res) {
