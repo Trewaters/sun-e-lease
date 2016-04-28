@@ -58,18 +58,24 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
     <br> near Long {{nearLong}}
     <br>
     </span>
+    
     <!-- Testing
         name = {{showNextTrainTime[0].name[0]}} <br><br>
         abbr = {{showNextTrainTime[0].abbr[0]}} <br><br>
         destination = {{showNextTrainTime[0].etd[0].destination[0]}} <br><br>
         How many trains at this station = {{showNextTrainTime[0].etd.length}} <br><br>
         original = {{showNextTrainTime}}
+        
+        {{stationScheduleAll}}
         -->
 </p>
 
 <p>
     TRIP DETAILS (between selected stations)<br> Get Station Schedule Information for {{selectedStationYAH[0]}}
-    <br><br> {{stationScheduleAll}}
+    <br><br>Original Station {{tdOrig}}, depart at {{tdOrigDep}}
+    <br>Destination {{tdDest}}, arrive at {{tdDestArrive}}
+    <br>Schedule Number {{tdSchNum}}
+    <br>BART Message {{tdMessageCo}}
 </p>
 
 <div ng-show="!showResult()">

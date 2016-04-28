@@ -41,14 +41,15 @@ app.factory('nearStation', function ($resource, $q, $rootScope) {
 
 app.factory('detailsDepart', function($resource,$q, $rootScope){
     return $resource('/yah/tripDetailsDepart', {});
-    // required parameter ??
+    // required parameter {'vOriginStation': station abbreviation, 'vDestination': station abbreviation}
+    // optional additional parameters { vTime, vDate, vB, vA, vLegend }
 });
 
 //---
 // controllers
 //---
-app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule, nearStation) {
-
+app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule, nearStation, detailsDepart) {
+    
     $scope.selectedStationYAH = "";
     $scope.vLatYAH = "0";
     $scope.vLongYAH = "0";
@@ -207,8 +208,25 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         if (value == "TripDetails") {
             //$scope.getStationSchedule();
             
-            // get arrive
+            var vOriginStation = $scope.selectedStationYAH; // $scope.selectedStationYAH
+            var vDestStation = $scope.selectedStationDS; // $scope.selectedStationDS
             
+            vTripDetails = { 'vOriginStation': vOriginStation, 'vDestStation': vDestStation };
+            
+            detailsDepart.get(vTripDetails,function(value){
+                $scope.tripDetails = JSON.stringify(value);
+                
+                $scope.tdDest = value.root.destination[0];
+                $scope.tdOrig = value.root.origin[0];
+                $scope.tdSchNum = value.root.sched_num[0]; // [NOTE] - schedule number
+                
+                $scope.tdDestArrive = value.root.schedule[0].request[0].trip[0].$.destTimeMin; // [NOTE] - time rider arrives at destination
+                $scope.tdOrigDep = value.root.schedule[0].request[0].trip[0].$.origTimeMin; // [NOTE] - time rider departs original station 
+                $scope.tdMessageCo = value.root.message[0].co2_emissions[0]; // [NOTE] - message for this trip 
+                
+                //$scope.td ; // [NOTE] - 
+                // if ( value.schedule[0].request[0].trip[0].leg.length > 1 ) then the rider must transfer
+            });
         };
     };
 

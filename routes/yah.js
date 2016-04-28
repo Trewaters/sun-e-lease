@@ -35,9 +35,46 @@ router.route('/here')
      */
 
 // Trip details for a specified departure time
-router.route('tripDetailsDepart')
+router.route('/tripDetailsDepart')
     .get(function(req,res){
-    
+        
+        // vOriginStation, vDestStation, 
+        
+        var vParsed = '';
+        
+        vCmd = 'depart';
+        vOrig = req.query.vOriginStation;
+        vDest = req.query.vDestStation;
+        vTime = req.query.vTime; // OPTIONAL - "h:mm+am/pm" or "now" departure time,
+        vDate = req.query.vDate; // OPTIONAL - "mm/dd/yyy" or "now" or "today" date for trip, 
+        vB = req.query.vB; // OPTIONAL - "0 to 4" how many trips before the specified time should be returned?, 
+        vA = req.query.vA; // OPTIONAL - specify how many trips after the specified time should be returned, 
+        vLegend = req.query.vLegend; // OPTIONAL - show legend information "0" is no and "1" is yes;
+        
+        var depart_options = {
+            host: 'api.bart.gov',
+            path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=now&time=now&key=' + config.bart.client + '&l=1'
+            // example - http://api.bart.gov/api/sched.aspx?cmd=depart&orig=ASHB&dest=CIVC&date=now&key=MW9S-E7SL-26DU-VV8V&b=2&a=2&l=1
+        };
+        
+        var depart_callback = function (response){
+            
+            response.on('data', function(chunk){
+                vParsed += chunk;
+            });
+            
+            response.on('end', function(){
+                parseString(vParsed, function(err, result){
+                    
+                    if(err){console.log('err = ' + err)}; // [DEBUG]
+                    
+                    //console.log('depart = ' + util.inspect(result, {showHidden: false, depth: 10})); // [DEBUG]
+                    
+                    return res.send(result);
+                });
+            });
+        };
+    http.request(depart_options, depart_callback).end();
 });
 
 // Nearest Station to current location
