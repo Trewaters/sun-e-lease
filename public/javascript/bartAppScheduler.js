@@ -13,13 +13,6 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource'])
 //---
 // services
 //---
-/*
-app.factory('youAreHere', function($resource, $q, $rootScope) {
-    //[TO DO] return the station that is closes to the user by getting their lat and longs
-    return $resource('/yah/here', {});
-});
-*/
-
 app.factory('listStations', function ($resource, $q, $rootScope) {
     return $resource('/yah/listAllStations', {});
 });
@@ -39,7 +32,7 @@ app.factory('nearStation', function ($resource, $q, $rootScope) {
     //required parameter {'latitude': vLat, 'longitude': vLong}
 });
 
-app.factory('detailsDepart', function($resource,$q, $rootScope){
+app.factory('detailsDepart', function ($resource, $q, $rootScope) {
     return $resource('/yah/tripDetailsDepart', {});
     // required parameter {'vOriginStation': station abbreviation, 'vDestination': station abbreviation}
     // optional additional parameters { vTime, vDate, vB, vA, vLegend }
@@ -49,7 +42,7 @@ app.factory('detailsDepart', function($resource,$q, $rootScope){
 // controllers
 //---
 app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule, nearStation, detailsDepart) {
-    
+
     $scope.selectedStationYAH = "";
     $scope.vLatYAH = "0";
     $scope.vLongYAH = "0";
@@ -170,26 +163,26 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
         if (value == "TripDetails") {
             //$scope.getStationSchedule();
-            
+
             var vOriginStation = $scope.selectedStationYAH; // $scope.selectedStationYAH
             var vDestStation = $scope.selectedStationDS; // $scope.selectedStationDS
-            
+
             vTripDetails = { 'vOriginStation': vOriginStation, 'vDestStation': vDestStation };
-            
-            detailsDepart.get(vTripDetails,function(value){
+
+            detailsDepart.get(vTripDetails, function (value) {
                 $scope.tripDetails = JSON.stringify(value);
-                
+
                 $scope.tdDest = value.destination[0];
                 $scope.tdOrig = value.origin[0];
                 $scope.tdSchNum = value.sched_num[0]; // [NOTE] - schedule number
-                
+
                 $scope.tdDestArrive = value.schedule[0].request[0].trip[0].$.destTimeMin; // [NOTE] - time rider arrives at destination
                 $scope.tdOrigDep = value.schedule[0].request[0].trip[0].$.origTimeMin; // [NOTE] - time rider departs original station 
                 $scope.tdMessageCo = value.message[0].co2_emissions[0]; // [NOTE] - message for this trip 
-                
-                 $scope.tdTransferNum = value.schedule[0].request[0].trip[0].leg.length;
-                 $scope.tdTransferSta = value.schedule[0].request[0].trip[0].leg[0].$.destination;
-                 
+
+                $scope.tdTransferNum = value.schedule[0].request[0].trip[0].leg.length;
+                $scope.tdTransferSta = value.schedule[0].request[0].trip[0].leg[0].$.destination;
+
                 // if ( value.schedule[0].request[0].trip[0].leg.length > 1 ) then the rider must transfer
             });
         };
