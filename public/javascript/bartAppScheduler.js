@@ -62,32 +62,6 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
     $scope.error = "";
 
-    var vDone = false;
-
-    /*
-        // [NOTE] 4/9/2016 - not using this at the moment
-            $scope.aShowPosition = function (position) {
-            $scope.vLatYAH = position.coords.latitude;
-            $scope.vLongYAH = position.coords.longitude;
-            //$scope.vAccYAH = position.coords.accuracy;
-            $scope.$apply();
-    
-            console.log("aShowPosition, latitude = " + position.coords.latitude + ", longitude = " + position.coords.longitude); // [DEBUG]
-        };
-        
-            // [NOTE] 4/9/2016 - not using this at the moment
-        $scope.aLocation = function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition($scope.aShowPosition)
-            } else {
-                $scope.error = "Angular Geolocation is not supported by this browser.";
-            };
-        };
-        
-        // [NOTE] 4/9/2016 - not using this at the moment
-        //$scope.aLocation();
-    */
-
     $scope.showResult = function () {
         return $scope.error == "";
     };
@@ -113,16 +87,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     // list all stations as an array
     // key values are all arrays also
     // keys = [ name, abbr, gtfs_latitude, gtfs_longitude, address, city, county, state, zipcode ]
-    $scope.stations = listStations.query(function () {
-        $scope.NearestStation();
-
-        //$scope.vStaDetailsYAH = $scope.nearSta;
-        //$scope.vLatYAH = $scope.nearLat;
-        //$scope.vLongYAH = $scope.nearLong;
-        //$scope.selectedStationYAH = $scope.nearAbbr;
-
-        //return $scope.vStaDetailsYAH;
-    });
+    $scope.stations = listStations.query();
 
     $scope.hereMapYAH = function () {
         // current location abbreviation = $scope.selectedStationYAH
@@ -198,8 +163,6 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         return $scope.stationScheduleAll;
     };
 
-    //$scope.mpValue="NextTrain";
-
     $scope.mpSubmit = function (value) {
         if (value == "NextTrain") {
             $scope.nextTrain();
@@ -216,15 +179,17 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
             detailsDepart.get(vTripDetails,function(value){
                 $scope.tripDetails = JSON.stringify(value);
                 
-                $scope.tdDest = value.root.destination[0];
-                $scope.tdOrig = value.root.origin[0];
-                $scope.tdSchNum = value.root.sched_num[0]; // [NOTE] - schedule number
+                $scope.tdDest = value.destination[0];
+                $scope.tdOrig = value.origin[0];
+                $scope.tdSchNum = value.sched_num[0]; // [NOTE] - schedule number
                 
-                $scope.tdDestArrive = value.root.schedule[0].request[0].trip[0].$.destTimeMin; // [NOTE] - time rider arrives at destination
-                $scope.tdOrigDep = value.root.schedule[0].request[0].trip[0].$.origTimeMin; // [NOTE] - time rider departs original station 
-                $scope.tdMessageCo = value.root.message[0].co2_emissions[0]; // [NOTE] - message for this trip 
+                $scope.tdDestArrive = value.schedule[0].request[0].trip[0].$.destTimeMin; // [NOTE] - time rider arrives at destination
+                $scope.tdOrigDep = value.schedule[0].request[0].trip[0].$.origTimeMin; // [NOTE] - time rider departs original station 
+                $scope.tdMessageCo = value.message[0].co2_emissions[0]; // [NOTE] - message for this trip 
                 
-                //$scope.td ; // [NOTE] - 
+                 $scope.tdTransferNum = value.schedule[0].request[0].trip[0].leg.length;
+                 $scope.tdTransferSta = value.schedule[0].request[0].trip[0].leg[0].$.destination;
+                 
                 // if ( value.schedule[0].request[0].trip[0].leg.length > 1 ) then the rider must transfer
             });
         };

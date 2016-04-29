@@ -76,18 +76,19 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
     <br>Destination {{tdDest}}, arrive at {{tdDestArrive}}
     <br>Schedule Number {{tdSchNum}}
     <br>BART Message {{tdMessageCo}}
+    <br>Transfer {{tdTransferNum-1}} times at {{tdTransferSta}}
 </p>
 
 <div ng-show="!showResult()">
     Error : {{error}} Error Code: {{error.code}}
 </div>
 
-<br>YAH value = {{selectedStationYAH}}
+<br>YAH value = {{selectedStationYAH[0]}}
 <br>YAH details =( {{vStaDetailsYAH}} )
 <br> Latitude (YAH)= {{vLatYAH}}
 <br> Longitude (YAH)= {{vLongYAH}}
 <br>
-<br>DS value = {{selectedStationDS}}
+<br>DS value = {{selectedStationDS[0]}}
 <br>DS details =( {{vStaDetailsDS}} )
 <br> Latitude (DS)= {{vLatDS}}
 <br> Longitude (DS)= {{vLongDS}}

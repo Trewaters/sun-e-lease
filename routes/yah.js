@@ -68,9 +68,9 @@ router.route('/tripDetailsDepart')
                     
                     if(err){console.log('err = ' + err)}; // [DEBUG]
                     
-                    //console.log('depart = ' + util.inspect(result, {showHidden: false, depth: 10})); // [DEBUG]
+                    console.log('depart = ' + util.inspect(result, {showHidden: false, depth: 10})); // [DEBUG]
                     
-                    return res.send(result);
+                    return res.send(result.root);
                 });
             });
         };
@@ -95,7 +95,7 @@ router.route('/nearestStation')
         vCurPosLat = req.query.latitude;
         vCurPosLong = req.query.longitude;
 
-        console.log("nearestStation, latitude = " + req.query.latitude + ", longitude = " + req.query.longitude + "\n"); // [DEBUG]
+        //console.log("nearestStation, latitude = " + req.query.latitude + ", longitude = " + req.query.longitude + "\n"); // [DEBUG]
 
         var nearStns_options = {
             host: 'api.bart.gov',
