@@ -30,6 +30,7 @@ app.use('/yah',yah);
 
 //https://nodejs.org/api/http.html#http_http_request_options_callback
 
+/*
 var server = app.listen(3000, function() {
     var address = server.address().address;
     var port = server.address().port;
@@ -37,3 +38,6 @@ var server = app.listen(3000, function() {
 
     console.log("app.listen on port 3000, http://%s%s%s", family, address, port);
 });
+*/
+
+var server = app.listen(process.env.PORT || '3000');
