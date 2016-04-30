@@ -8,30 +8,43 @@
     station = {{stations}}
             -->
 
-    <label>You Are Here</label>
-    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMapYAH()">
+    <!--
+    glyphicons come from http://glyphicons.com/ , see their website for free glyphicons    
+    -->
+    <label>You Are Here </label> <span class="glyphicon glyphicon-star"></span>
+    <Br>
+    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMapYAH()">
     </select>
-    <br> {{selectedStationYAH[0]}}
+     <!--
+    <br> {{selectedStationYAH[0]}}    
+    -->
+    
     <br>
 
-    <label>Destination Stations</label>
-    <select ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="hereMapDS()"></select>
-    <br> {{selectedStationDS[0]}}
+    <span class="glyphicon glyphicon-road"></span><label>&nbsp;Destination Station</label>
+    <br>
+    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="hereMapDS()">
+    </select>
+         <!--
+    <br> {{selectedStationDS[0]}}  
+    -->
+    
 </center>
-
+<br>
+<br>
 <!-- https://docs.angularjs.org/guide/forms forms reference in angular -->
 <form name="infoSelect">
     <fieldset>
         <legend>BART Information:</legend>
         <input type="radio" value="NextTrain" ng-model="mpValue">NEXT TRAIN (train times of "You Are Here" station)<br>
         <input type="radio" value="TripDetails" ng-model="mpValue">TRIP DETAILS (between selected stations)<br><br>
-        <input type="submit" value="click to display information" ng-click="mpSubmit(mpValue)">
+        <input class="btn btn-default btn-lg"  type="submit" value="display information" ng-click="mpSubmit(mpValue)">
     </fieldset>
 </form>
 
 NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for {{selectedStationYAH[0]}}<br><br>
 <ol>
-    <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index">
+    <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index"  ng-class-odd="'bg-success'">
 
         <b>{{train.destination[0]}}</b>,
         <br><em>heading</em> {{train.estimate[0].direction[0]}}
@@ -50,8 +63,8 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
 <p>
     Near Train Station to you is <b>{{NearStationCalc}}</b><br>
     <div class="btn-group">
-    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle-"dropdown" aria-haspopup="true" aria-expanded="false" ng-click="NearestStation(); vShow = true;">
-        Click here for nearest
+    <button class="btn btn-default btn-lg" type="button" ng-click="NearestStation(); vShow = true;">
+        Click here for nearest 
     </button>
     </div>
     
