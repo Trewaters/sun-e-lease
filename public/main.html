@@ -49,7 +49,12 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
 
 <p>
     Near Train Station to you is <b>{{NearStationCalc}}</b><br>
-    <button type="button" ng-click="NearestStation(); vShow = true;">Click here for nearest</button>
+    <div class="btn-group">
+    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle-"dropdown" aria-haspopup="true" aria-expanded="false" ng-click="NearestStation(); vShow = true;">Click here for nearest
+    <span class="caret"></span>
+    </button>
+    </div>
+    
     <span ng-show="vShow">
     <br>
     <br> {{nearSta}}
