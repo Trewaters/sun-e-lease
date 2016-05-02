@@ -13,26 +13,28 @@
     -->
     <label>You Are Here </label> <span class="glyphicon glyphicon-star"></span>
     <Br>
-    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH" ng-change="hereMapYAH()">
+    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationYAH"
+        ng-change="hereMapYAH()">
     </select>
-     <!--
+    <!--
     <br> {{selectedStationYAH[0]}}    
     -->
-    
+
     <br>
 
     <span class="glyphicon glyphicon-road"></span><label>&nbsp;Destination Station</label>
     <br>
-    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS" ng-change="hereMapDS()">
+    <select class="form-control input-lg" ng-options="station.abbr as station.name for station in stations" ng-model="selectedStationDS"
+        ng-change="hereMapDS()">
     </select>
-         <!--
+    <!--
     <br> {{selectedStationDS[0]}}  
     -->
-    
-</center>
-<br>
-<br>
-<!-- https://docs.angularjs.org/guide/forms forms reference in angular -->
+
+
+
+    <!-- https://docs.angularjs.org/guide/forms forms reference in angular
+
 <form name="infoSelect">
     <fieldset>
         <legend>BART Information:</legend>
@@ -41,43 +43,53 @@
         <input class="btn btn-default btn-lg"  type="submit" value="display information" ng-click="mpSubmit(mpValue)">
     </fieldset>
 </form>
-
-NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for {{selectedStationYAH[0]}}<br><br>
-<ol>
-    <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index"  ng-class-odd="'bg-success'">
-
-        <b>{{train.destination[0]}}</b>,
-        <br><em>heading</em> {{train.estimate[0].direction[0]}}
-
-        <ul>
-            <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
-                <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
-                <em>{{estimate.length[0]}} cars long</em>
-            </li>
-        </ul>
-
-    </li>
-
-</ol>
-
-<p>
-    Near Train Station to you is <b>{{NearStationCalc}}</b><br>
-    <div class="btn-group">
-    <button class="btn btn-default btn-lg" type="button" ng-click="NearestStation(); vShow = true;">
-        Click here for nearest 
+ -->
+    <br>
+    <br>
+    <button class="btn btn-default btn-lg" type="button" ng-click="NearestStation(); vNearShow = true;vNextShow = false; vTripShow = false;">
+        Nearest Station 
     </button>
-    </div>
-    
-    <span ng-show="vShow">
-    <br>
-    <br> {{nearSta}}
-    <br> {{nearDist}} meters away
-    <br> near Lat {{nearLat}}
-    <br> near Long {{nearLong}}
-    <br>
-    </span>
-    
-    <!-- Testing
+
+    <button class="btn btn-default btn-lg" type="button" ng-click="mpSubmit('NextTrain'); vNextShow = true;vNearShow = false; vTripShow = false;">Next Train
+</button>
+
+    <button class="btn btn-default btn-lg" type="button" ng-click="mpSubmit('TripDetails'); vTripShow = true;vNextShow = false;vNearShow = false;"
+        ng-hide="selectedStationDS[0]==null||selectedStationDS[0]==''">Trip Details {{selectedStationYAH[0]}} to {{selectedStationDS[0]}}
+</button>
+</center>
+<br>
+<br>
+<div ng-show="vNextShow">
+    NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for {{selectedStationYAH[0]}}<br><br>
+    <ol>
+        <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index" ng-class-odd="'bg-success'">
+
+            <b>{{train.destination[0]}}</b>,
+            <br><em>heading</em> {{train.estimate[0].direction[0]}}
+
+            <ul>
+                <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
+                    <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
+                    <em>{{estimate.length[0]}} cars long</em>
+                </li>
+            </ul>
+
+        </li>
+
+    </ol>
+</div>
+
+<div ng-show="vNearShow">
+    <center>
+        <h1>Nearest Train Station</h1>
+        <h2> {{nearSta}}</h2>
+        <b>{{nearDist}} </b>meters away
+        <br> near Lat <em>{{nearLat}}</em>
+        <br> near Long <em>{{nearLong}}</em>
+        </center>
+
+
+        <!-- Testing
         name = {{showNextTrainTime[0].name[0]}} <br><br>
         abbr = {{showNextTrainTime[0].abbr[0]}} <br><br>
         destination = {{showNextTrainTime[0].etd[0].destination[0]}} <br><br>
@@ -86,21 +98,10 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
         
         {{stationScheduleAll}}
         -->
-</p>
 
-<p>
-    TRIP DETAILS (between selected stations)<br> Get Station Schedule Information for {{selectedStationYAH[0]}}
-    <br><br>Original Station {{tdOrig}}, depart at {{tdOrigDep}}
-    <br>Destination {{tdDest}}, arrive at {{tdDestArrive}}
-    <br>Schedule Number {{tdSchNum}}
-    <br>BART Message {{tdMessageCo}}
-    <br>Transfer {{tdTransferNum-1}} times at {{tdTransferSta}}
-</p>
-
-<div ng-show="!showResult()">
-    Error : {{error}} Error Code: {{error.code}}
 </div>
 
+<div ng-show="testData">
 <br>YAH value = {{selectedStationYAH[0]}}
 <br>YAH details =( {{vStaDetailsYAH}} )
 <br> Latitude (YAH)= {{vLatYAH}}
@@ -110,3 +111,25 @@ NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for
 <br>DS details =( {{vStaDetailsDS}} )
 <br> Latitude (DS)= {{vLatDS}}
 <br> Longitude (DS)= {{vLongDS}}
+</div>
+
+<div ng-show="vTripShow">
+    
+        <center>
+        <h1>TRIP DETAILS (between selected stations)</h1>
+        <em>Get Station Schedule Information for {{selectedStationYAH[0]}}</em>
+        </center>
+        <br>
+        <b>Original Station</b> {{tdOrig}}, departs at {{tdOrigDep}}
+        <div ng-show="tdTransferNum-1 > 0">
+        <br><b>Transfer</b> {{tdTransferNum-1}} times at {{tdTransferSta}}
+        </div>
+        <br><b>Destination</b> {{tdDest}}, arrive at {{tdDestArrive}}
+        <br><b>Schedule Number</b> #{{tdSchNum}}
+        <br><b>BART Message:</b> <span ng-bind-html="tdMessageCo"></span>
+</div>
+
+<div ng-show="!showResult()">
+    Error : {{error}} Error Code: {{error.code}}
+</div>
+<button ng-click="testData=true">Show test data</button>

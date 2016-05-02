@@ -1,9 +1,21 @@
-var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource'])
+var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource','ngSanitize'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'main.html',
                 controller: 'mainScreen'
+            })
+            .when('/nearSta',{
+                templateUrl: 'nearSta.html',
+                controller: 'nearStationScreen'
+            })
+            .when('/nextTrain',{
+                templateUrl: 'nextTrain.html',
+                controller: 'nextTrainScreen'
+            })
+            .when('/tripDetails',{
+                templateUrl: 'tripDetails.html',
+                controller: 'tripDetailsScreen'
             })
             .otherwise({
                 redirectTo: '/'
@@ -133,7 +145,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
 
         if ($scope.selectedStationYAH == '' || $scope.selectedStationYAH == null) {
             //$scope.showNextTrainTime = departTime.get({'vOriginStation':'19TH'});
-            $scope.showNextTrainTime = departTime.query({ 'vOriginStation': '19TH' });
+            $scope.showNextTrainTime = departTime.query({ 'vOriginStation': 'NBRK' });
         } else {
             //$scope.showNextTrainTime = departTime.get({'vOriginStation': $scope.selectedStationYAH});
             $scope.showNextTrainTime = departTime.query({ 'vOriginStation': $scope.selectedStationYAH });
