@@ -51,9 +51,12 @@ router.route('/tripDetailsDepart')
         vA = req.query.vA; // OPTIONAL - specify how many trips after the specified time should be returned, 
         vLegend = req.query.vLegend; // OPTIONAL - show legend information "0" is no and "1" is yes;
         
+        // [TO DO] 5/3/2016 - capture the current time in the proper format. Use that instead of now. Now seems to be inaccurate. 
+        
         var depart_options = {
             host: 'api.bart.gov',
-            path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=now&time=now&key=' + config.bart.client + '&l=1'
+            // path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=today&time=now&key=' + config.bart.client + '&l=1'
+            path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=today&b=0&a=1&key=' + config.bart.client + '&l=1' // [DEBUG] test minus time
             // example - http://api.bart.gov/api/sched.aspx?cmd=depart&orig=ASHB&dest=CIVC&date=now&key=MW9S-E7SL-26DU-VV8V&b=2&a=2&l=1
         };
         
