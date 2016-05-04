@@ -57,14 +57,18 @@
         ng-hide="selectedStationDS[0]==null||selectedStationDS[0]==''">Trip Details {{selectedStationYAH[0]}} to {{selectedStationDS[0]}}
 </button>
 </center>
-<br>
-<br>
-<div ng-show="vNextShow">
-    NEXT TRAIN (train times of "You Are Here" station)<br> Get Train Information for {{selectedStationYAH[0]}}<br><br>
-    <ol>
-        <li ng-repeat="train in showNextTrainTime[0].etd" ng-init="vIdx = $index" ng-class-odd="'bg-success'">
+<br><br>
 
-            <b>{{train.destination[0]}}</b>,
+<div ng-show="vNextShow">
+    <center>
+    <h1>NEXT TRAIN</h1> 
+    <em>Information for <b>{{selectedStationYAH[0]}}</b></em>
+    
+    </center>
+    <ol>
+        <li ng-repeat="train in showNextTrainTime[0].etd | orderBy:'estimate[0].direction[0]'" ng-init="vIdx = $index" ng-class-odd="'bg-success'">
+
+            <b><big>{{train.destination[0]}}</big></b>,
             <br><em>heading</em> {{train.estimate[0].direction[0]}}
 
             <ul>
@@ -101,6 +105,38 @@
 
 </div>
 
+<div ng-show="vTripShow">
+    
+        <center>
+        <h1>TRIP DETAILS</h1>
+        <em>Schedule Information for <b>{{tdOrig}}</b> to <b>{{tdDest}}</b></em>
+        </center>
+        <br>
+        <dl class="dl-horizontal">
+            <dt>Original Station</dt>
+            <dd><b>{{tdOrig}}</b>, departs at <b>{{tdOrigDep}}</b></dd>
+            
+            <dt ng-show="tdTransferNum-1 > 0">Transfer</dt>
+            <dd ng-show="tdTransferNum-1 > 0">{{tdTransferNum-1}} times at <b>{{tdTransferSta}}</b></dd>
+            
+            <dt>Destination</dt>
+            <dd><b >{{tdDest}}</b>, arrive at <b>{{tdDestArrive}}</b></dd>
+            
+            <dt>Schedule Number</dt>
+            <dd>#{{tdSchNum}}</dd>
+            
+            <dt>BART Message</dt>
+            <dd><span ng-bind-html="tdMessageCo"></span></dd>
+        </dl>
+        
+</div>
+
+<br>
+<br>
+<div>
+<img src="/img/BART_cc_map_20141029.png" class="img-rounded center-block" width="100%" alt="BART Station Map">
+</div>
+
 <div ng-show="testData">
 <br>YAH value = {{selectedStationYAH[0]}}
 <br>YAH details =( {{vStaDetailsYAH}} )
@@ -111,22 +147,6 @@
 <br>DS details =( {{vStaDetailsDS}} )
 <br> Latitude (DS)= {{vLatDS}}
 <br> Longitude (DS)= {{vLongDS}}
-</div>
-
-<div ng-show="vTripShow">
-    
-        <center>
-        <h1>TRIP DETAILS</h1>
-        <em>Schedule Information for {{tdOrig}} to {{tdDest}}</em>
-        </center>
-        <br>
-        <b>Original Station</b> {{tdOrig}}, departs at {{tdOrigDep}}
-        <div ng-show="tdTransferNum-1 > 0">
-        <br><b>Transfer</b> {{tdTransferNum-1}} times at {{tdTransferSta}}
-        </div>
-        <br><b>Destination</b> {{tdDest}}, arrive at {{tdDestArrive}}
-        <br><b>Schedule Number</b> #{{tdSchNum}}
-        <br><b>BART Message:</b> <span ng-bind-html="tdMessageCo"></span>
 </div>
 
 <div ng-show="!showResult()">
