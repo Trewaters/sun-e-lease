@@ -227,6 +227,9 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
                 $scope.nearAbbr = value.nearAbbr;
                 $scope.nearLat = value.nearLat;
                 $scope.nearLong = value.nearLong;
+                $scope.nearAddr = value.nearAddr;
+                $scope.nearCity = value.nearCity;
+                $scope.nearZip = value.nearZip;
 
             });
 

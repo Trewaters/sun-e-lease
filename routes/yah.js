@@ -121,6 +121,9 @@ router.route('/nearestStation')
                     var vShortestAbbr = '';
                     var vShortestLong;
                     var vShortestLat;
+                    var vShortestAddr;
+                    var vShortestCity;
+                    var vShortestZip;
 
                     for (var i = 0; i < vStSchAll.root.stations[0].station.length; i++) {
 
@@ -137,10 +140,13 @@ router.route('/nearestStation')
                             vShortestAbbr = vStSchAll.root.stations[0].station[i].abbr[0];
                             vShortestLat = vStSchAll.root.stations[0].station[i].gtfs_latitude[0];
                             vShortestLong = vStSchAll.root.stations[0].station[i].gtfs_longitude[0];
+                            vShortestAddr = vStSchAll.root.stations[0].station[i].address[0];
+                            vShortestCity = vStSchAll.root.stations[0].station[i].city[0];
+                            vShortestZip = vStSchAll.root.stations[0].station[i].zipcode[0];
                             
                         };
                         if (vStSchAll.root.stations[0].station.length - 1 == i) {
-                            return res.json({ 'nearSta': vShortestSta, 'nearDist': vShortestDist, 'nearAbbr': vShortestAbbr , 'nearLat': vShortestLat, 'nearLong': vShortestLong});
+                            return res.json({ 'nearSta': vShortestSta, 'nearDist': vShortestDist, 'nearAbbr': vShortestAbbr , 'nearLat': vShortestLat, 'nearLong': vShortestLong, 'nearAddr': vShortestAddr, 'nearCity': vShortestCity, 'nearZip' : vShortestZip});
                         };
                     };
                 });

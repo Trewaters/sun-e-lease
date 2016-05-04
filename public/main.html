@@ -86,10 +86,18 @@
 <div ng-show="vNearShow">
     <center>
         <h1>Nearest Train Station</h1>
-        <h2> {{nearSta}}</h2>
+        
+        <address>
+         <h3 class="text-info">{{nearSta}}</h3>
+         {{nearAddr}}<br>
+         {{nearCity}}, CA {{nearZip}}   
+        </address>
         <b>{{nearDist}} </b>meters away
+        <div ng-show="testData">
         <br> near Lat <em>{{nearLat}}</em>
         <br> near Long <em>{{nearLong}}</em>
+        </div>
+            
         </center>
 
 
