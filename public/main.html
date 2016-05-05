@@ -72,7 +72,7 @@
             <br><em>heading</em> {{train.estimate[0].direction[0]}}
 
             <ul>
-                <li ng-repeat="estimate in showNextTrainTime[0].etd[vIdx].estimate">
+                <li ng-repeat="estimate in train.estimate">
                     <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
                     <em>{{estimate.length[0]}} cars long</em>
                 </li>
@@ -142,8 +142,12 @@
 <br>
 <br>
 <div>
-<img src="/img/BART_cc_map_20141029.png" class="img-rounded center-block" width="100%" alt="BART Station Map">
+<!--
+    <img src="/img/BART_cc_map_20141029.png" class="img-rounded center-block" width="100%" alt="BART Station Map">
+-->
+<img src="/img/system-map.gif" class="img-rounded center-block" width="100%" alt="BART Station Map">
 </div>
+
 
 <div ng-show="testData">
 <br>YAH value = {{selectedStationYAH[0]}}
