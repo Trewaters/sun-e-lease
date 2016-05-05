@@ -65,8 +65,8 @@
     <em>Information for <b>{{selectedStationYAH[0]}}</b></em>
     
     </center>
-    <ol>
-        <li ng-repeat="train in showNextTrainTime[0].etd | orderBy:'estimate[0].direction[0]'" ng-init="vIdx = $index" ng-class-odd="'bg-success'">
+    <ol style="width:50%" class="center-block">
+        <li ng-repeat="train in showNextTrainTime[0].etd | orderBy:'estimate[0].direction[0]'" ng-init="vIdx = $index" ng-class-odd="'bg-success'" style="background-color:{{train.estimate[0].hexcolor[0]}}; border-bottom-style:solid; border-width:1px">
 
             <big class="btn" style="color:{{train.estimate[0].hexcolor[0]}}; background-color:#404040"><b>{{train.destination[0]}}</b></big>
             <br><em>heading</em> {{train.estimate[0].direction[0]}}
