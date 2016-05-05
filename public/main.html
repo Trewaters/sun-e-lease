@@ -59,7 +59,7 @@
 </center>
 <br><br>
 
-<div ng-show="vNextShow">
+<div ng-show="vNextShow" >
     <center>
     <h1>NEXT TRAIN</h1> 
     <em>Information for <b>{{selectedStationYAH[0]}}</b></em>
@@ -68,9 +68,9 @@
     <ol>
         <li ng-repeat="train in showNextTrainTime[0].etd | orderBy:'estimate[0].direction[0]'" ng-init="vIdx = $index" ng-class-odd="'bg-success'">
 
-            <b><big>{{train.destination[0]}}</big></b>,
+            <big class="btn" style="color:{{train.estimate[0].hexcolor[0]}}; background-color:#404040"><b>{{train.destination[0]}}</b></big>
             <br><em>heading</em> {{train.estimate[0].direction[0]}}
-
+            
             <ul>
                 <li ng-repeat="estimate in train.estimate">
                     <em>departing</em> in {{estimate.minutes[0]}} minutes,<br>
@@ -88,7 +88,7 @@
         <h1>Nearest Train Station</h1>
         
         <address>
-         <h3 class="text-info">{{nearSta}}</h3>
+         <h3 class="text-info"><b>{{nearSta}}</b></h3>
          {{nearAddr}}<br>
          {{nearCity}}, CA {{nearZip}}   
         </address>
