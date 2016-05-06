@@ -1,19 +1,19 @@
-var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource','ngSanitize'])
+var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource', 'ngSanitize'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'main.html',
                 controller: 'mainScreen'
             })
-            .when('/nearSta',{
+            .when('/nearSta', {
                 templateUrl: 'nearSta.html',
-                controller: 'nearStationScreen'
+                controller: 'ctlNearStationScreen'
             })
-            .when('/nextTrain',{
+            .when('/nextTrain', {
                 templateUrl: 'nextTrain.html',
                 controller: 'nextTrainScreen'
             })
-            .when('/tripDetails',{
+            .when('/tripDetails', {
                 templateUrl: 'tripDetails.html',
                 controller: 'tripDetailsScreen'
             })
@@ -51,16 +51,17 @@ app.factory('detailsDepart', function ($resource, $q, $rootScope) {
 });
 
 //---
-// controllers
+// controllers, 'mainScreen""
+// Main splash screen that users hit
 //---
-app.controller('mainScreen', function ($scope, listStations, departTime, stationSchedule, nearStation, detailsDepart) {
+app.controller('mainScreen', function ($scope, $rootScope, listStations, departTime, stationSchedule, nearStation, detailsDepart) {
 
     $scope.selectedStationYAH = "";
     $scope.vLatYAH = "0";
     $scope.vLongYAH = "0";
     $scope.vAccYAH = "0";
 
-    $scope.selectedStationDS = "";
+    $rootScope.selectedStationDS = "";
     $scope.vLatDS = "0";
     $scope.vLongDS = "0";
     //$scope.vAccDS = "0";
@@ -97,7 +98,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     $scope.hereMapYAH = function () {
         // current location abbreviation = $scope.selectedStationYAH
         var strSelectedStationYAH;
-
+        
         for (var i = 0; i < $scope.stations.length; i++) {
 
             var vStaObj = JSON.parse(JSON.stringify($scope.stations[i]));
@@ -105,7 +106,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
             var strStaObj = JSON.stringify(vStaObj.abbr);
 
             strSelectedStationYAH = JSON.stringify($scope.selectedStationYAH);
-
+            
             if (strStaObj === strSelectedStationYAH) {
 
                 $scope.vStaDetailsYAH = JSON.stringify($scope.stations[i]);
@@ -120,13 +121,13 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     };
 
     $scope.hereMapDS = function () {
-        // current location abbreviation = $scope.selectedStationDS
+        // current location abbreviation = $rootScope.selectedStationDS
         for (var i = 0; i < $scope.stations.length; i++) {
 
             var vStaObj = JSON.parse(JSON.stringify($scope.stations[i]));
 
             var strStaObj = JSON.stringify(vStaObj.abbr);
-            var strSelectedStationDS = JSON.stringify($scope.selectedStationDS);
+            var strSelectedStationDS = JSON.stringify($rootScope.selectedStationDS);
 
             if (strStaObj === strSelectedStationDS) {
 
@@ -142,6 +143,8 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
     };
 
     $scope.nextTrain = function () {
+
+        console.log("$scope.selectedStationYAH = " + $scope.selectedStationYAH); // [DEBUG]
 
         if ($scope.selectedStationYAH == '' || $scope.selectedStationYAH == null) {
             //$scope.showNextTrainTime = departTime.get({'vOriginStation':'19TH'});
@@ -177,7 +180,7 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
             //$scope.getStationSchedule();
 
             var vOriginStation = $scope.selectedStationYAH; // $scope.selectedStationYAH
-            var vDestStation = $scope.selectedStationDS; // $scope.selectedStationDS
+            var vDestStation = $rootScope.selectedStationDS; // $rootScope.selectedStationDS
 
             vTripDetails = { 'vOriginStation': vOriginStation, 'vDestStation': vDestStation };
 
@@ -200,6 +203,58 @@ app.controller('mainScreen', function ($scope, listStations, departTime, station
         };
     };
 
+    // [NOTE] - still active but moving to own controller, 5/5/2016
+    $scope.NearestStation = function () {
+        var vCurPosition = '';
+        var position;
+
+        /*
+                // [NOTE] - I feel like I need to do this on the server side.
+                // if "$scope.stationScheduleAll" !null use for all stations and their details. The detail we care about is the lat and long.
+                if ($scope.stationScheduleAll == null || $scope.stationScheduleAll == ''){
+                    vStSchAll = $scope.getStationSchedule;
+                };
+        */
+
+        $scope.aShowPosition = function (position) {
+            $scope.nearLat = position.coords.latitude;
+            $scope.nearLong = position.coords.longitude;
+            $scope.nearAcc = position.coords.accuracy;
+
+            vCurPosition = { 'latitude': $scope.nearLat, 'longitude': $scope.nearLong };
+
+            nearStation.get(vCurPosition, function (value) {
+
+                $scope.nearSta = value.nearSta;
+                $scope.nearDist = value.nearDist;
+                $scope.nearAbbr = value.nearAbbr;
+                $scope.nearLat = value.nearLat;
+                $scope.nearLong = value.nearLong;
+                $scope.nearAddr = value.nearAddr;
+                $scope.nearCity = value.nearCity;
+                $scope.nearZip = value.nearZip;
+
+            });
+
+        };
+
+        if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition($scope.aShowPosition);
+
+        } else {
+            $scope.error = "Angular Geolocation is not supported by this browser.";
+        };
+    };
+});
+
+//---
+// controllers, 'ctlNearSta'
+// near station controller
+// [NOTE] - working on moving this from 'mainScreen' controller
+//---
+
+app.controller('ctlNearStationScreen', function ($scope, nearStation) {
     //
     $scope.NearestStation = function () {
         var vCurPosition = '';

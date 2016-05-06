@@ -126,6 +126,7 @@ router.route('/nearestStation')
                     var vShortestZip;
 
                     for (var i = 0; i < vStSchAll.root.stations[0].station.length; i++) {
+                        
 
                         vDist = geo.getDistance(
                             { latitude: vCurPosLat, longitude: vCurPosLong },
@@ -299,7 +300,7 @@ router.route('/departTimeStation')
                     } else {
 
                         console.log("etd result.root.station = " + util.inspect(result.root.station, { showHidden: false, depth: null }) + "\n");
-                        console.log("etd station array length, Station of Origin = " + result.root.station.length);
+                        console.log("etd station array length, Station of Origin = " + result.root.station[0].name[0]);
                         var vIndexStation = result.root.station.length - 1;
 
                         // [NOTE] This will let me know how many trains are leaving the station at any given time
