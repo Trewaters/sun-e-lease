@@ -39,7 +39,7 @@ router.route('/tripDetailsDepart')
     .get(function(req,res){
         
         // vOriginStation, vDestStation, 
-        
+                
         var vParsed = '';
         
         vCmd = 'depart';
@@ -48,13 +48,14 @@ router.route('/tripDetailsDepart')
         vTime = req.query.vTime; // OPTIONAL - "h:mm+am/pm" or "now" departure time,
         vDate = req.query.vDate; // OPTIONAL - "mm/dd/yyy" or "now" or "today" date for trip, 
         vB = req.query.vB; // OPTIONAL - "0 to 4" how many trips before the specified time should be returned?, 
-        vA = req.query.vA; // OPTIONAL - specify how many trips after the specified time should be returned, 
+        // [NOTE] - I set this to 0 so I avoid any times before the user arrives at the station
+        vA = req.query.vA; // OPTIONAL - specify how many trips after the specified time should be returned,
+        // [NOTE] - I set this to 1 so I can get the next train for the user. 
         vLegend = req.query.vLegend; // OPTIONAL - show legend information "0" is no and "1" is yes;
         
         var depart_options = {
             host: 'api.bart.gov',
-            // path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=today&time=now&key=' + config.bart.client + '&l=1'
-            path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=today&b=0&a=1&key=' + config.bart.client + '&l=1' // [DEBUG] test minus time
+            path: '/api/sched.aspx?cmd=' + vCmd + '&orig=' + vOrig + '&dest=' + vDest + '&date=today&time=now&b=0&a=1&key=' + config.bart.client + '&l=1'
             // example - http://api.bart.gov/api/sched.aspx?cmd=depart&orig=ASHB&dest=CIVC&date=now&key=MW9S-E7SL-26DU-VV8V&b=2&a=2&l=1
         };
         

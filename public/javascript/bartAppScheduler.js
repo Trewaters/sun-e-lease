@@ -121,13 +121,13 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
     };
 
     $scope.hereMapDS = function () {
-        // current location abbreviation = $rootScope.selectedStationDS
+        // current location abbreviation = $scope.selectedStationDS
         for (var i = 0; i < $scope.stations.length; i++) {
 
             var vStaObj = JSON.parse(JSON.stringify($scope.stations[i]));
 
             var strStaObj = JSON.stringify(vStaObj.abbr);
-            var strSelectedStationDS = JSON.stringify($rootScope.selectedStationDS);
+            var strSelectedStationDS = JSON.stringify($scope.selectedStationDS);
 
             if (strStaObj === strSelectedStationDS) {
 
@@ -178,7 +178,7 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
             //$scope.getStationSchedule();
 
             var vOriginStation = $scope.selectedStationYAH; // $scope.selectedStationYAH
-            var vDestStation = $rootScope.selectedStationDS; // $rootScope.selectedStationDS
+            var vDestStation = $scope.selectedStationDS; // $scope.selectedStationDS
 
             vTripDetails = { 'vOriginStation': vOriginStation, 'vDestStation': vDestStation };
 
@@ -237,7 +237,7 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
                 //$scope.selectedStationYAH = {"name":[value.nearSta],"abbr":[value.nearAbbr],"gtfs_latitude":[value.nearLat],"gtfs_longitude":[value.nearLong],"address":[value.nearAddr],"city":[value.nearCity],"county":[value.nearCounty],"state":["CA"],"zipcode":[value.nearZip]};
                 $scope.selectedStationYAH = [value.nearAbbr];
                 //$scope.vNextShow = true;
-                //console.log('selectedStationYAH = ' + JSON.stringify($scope.selectedStationYAH));
+                //console.log('selectedStationYAH = ' + JSON.stringify($scope.selectedStationYAH)); //[DEBUG]
                 
             });
 
