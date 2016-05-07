@@ -144,10 +144,11 @@ router.route('/nearestStation')
                             vShortestAddr = vStSchAll.root.stations[0].station[i].address[0];
                             vShortestCity = vStSchAll.root.stations[0].station[i].city[0];
                             vShortestZip = vStSchAll.root.stations[0].station[i].zipcode[0];
+                            vShortestCounty = vStSchAll.root.stations[0].station[i].county[0];
                             
                         };
                         if (vStSchAll.root.stations[0].station.length - 1 == i) {
-                            return res.json({ 'nearSta': vShortestSta, 'nearDist': vShortestDist, 'nearAbbr': vShortestAbbr , 'nearLat': vShortestLat, 'nearLong': vShortestLong, 'nearAddr': vShortestAddr, 'nearCity': vShortestCity, 'nearZip' : vShortestZip});
+                            return res.json({ 'nearSta': vShortestSta, 'nearDist': vShortestDist, 'nearAbbr': vShortestAbbr , 'nearLat': vShortestLat, 'nearLong': vShortestLong, 'nearAddr': vShortestAddr, 'nearCity': vShortestCity, 'nearZip' : vShortestZip, 'nearCounty': vShortestCounty});
                         };
                     };
                 });
@@ -270,8 +271,26 @@ router.route('/departTimeStation')
             response.on('end', function () {
                 parseString(vParsed, function (err, result) {
 
-                    //console.log("etd result = " + util.inspect(result, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
-
+                    // console.log("etd result = " + util.inspect(result, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
+                    
+                   // console.log("result.root.message[0].warning[0] = " + result.root.message[0].warning[0] + "\n"); // [DEBUG]
+                    
+                    // [TO DO] - refine this message/error checking so I can get the specific station message. Currently checking a non-existant value causes an error that breaks the app. 
+                    /*
+                    
+                    if (result.root.message[0].warning[0] !== '' || result.root.message[0].warning[0] !== null ){
+                        if(result.root.station[0].message[0].error[0] !== null){
+                            return res.send([result.root.station[0].message[0].error[0]]);
+                        }else{
+                            return res.send([result.root.message[0].warning[0]]);
+                        };
+                    };
+                    */
+                    
+                    if (result.root.message[0] !== ''){
+                         return res.send([result.root.message[0].warning[0]]);
+                    };
+                    
 
                     if (result.root.uri == null || result.root.uri == '') {
                         return res.send(['no trains to display']);

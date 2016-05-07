@@ -144,11 +144,9 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
 
     $scope.nextTrain = function () {
 
-        console.log("$scope.selectedStationYAH = " + $scope.selectedStationYAH); // [DEBUG]
-
         if ($scope.selectedStationYAH == '' || $scope.selectedStationYAH == null) {
             //$scope.showNextTrainTime = departTime.get({'vOriginStation':'19TH'});
-            $scope.showNextTrainTime = departTime.query({ 'vOriginStation': 'NBRK' });
+            $scope.showNextTrainTime = departTime.query({ 'vOriginStation': 'NBRK' }); 
         } else {
             //$scope.showNextTrainTime = departTime.get({'vOriginStation': $scope.selectedStationYAH});
             $scope.showNextTrainTime = departTime.query({ 'vOriginStation': $scope.selectedStationYAH });
@@ -233,7 +231,14 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
                 $scope.nearAddr = value.nearAddr;
                 $scope.nearCity = value.nearCity;
                 $scope.nearZip = value.nearZip;
-
+                $scope.nearCounty = value.nearCounty;
+                
+                // create an object and save it as selectedStationYAH so it can be used as the value for that dropdown.
+                //$scope.selectedStationYAH = {"name":[value.nearSta],"abbr":[value.nearAbbr],"gtfs_latitude":[value.nearLat],"gtfs_longitude":[value.nearLong],"address":[value.nearAddr],"city":[value.nearCity],"county":[value.nearCounty],"state":["CA"],"zipcode":[value.nearZip]};
+                $scope.selectedStationYAH = [value.nearAbbr];
+                //$scope.vNextShow = true;
+                //console.log('selectedStationYAH = ' + JSON.stringify($scope.selectedStationYAH));
+                
             });
 
         };
