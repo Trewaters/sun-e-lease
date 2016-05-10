@@ -66,7 +66,7 @@ router.route('/tripDetailsDepart')
             });
             
             response.on('end', function(){
-                parseString(vParsed, function(err, result){
+                parseString(vParsed, {explicitArray:false}, function(err, result){
                     
                     if(err){console.log('err = ' + err)}; // [DEBUG]
                     
@@ -111,7 +111,7 @@ router.route('/nearestStation')
             });
 
             response.on('end', function () {
-                parseString(vParsed, function (err, result) {
+                parseString(vParsed, {explicitArray:false}, function (err, result) {
                     
                     vStSchAll = result;
 
@@ -182,7 +182,7 @@ router.route('/stationSched')
             });
 
             response.on('end', function (err, result) {
-                parseString(vParsed, function (err, result) {
+                parseString(vParsed, {explicitArray:false}, function (err, result) {
                     //console.log("stnsched result = " + util.inspect(result, { showHidden: false, depth: 6 }) + "\n");
 
                     console.log("stnsched result.root.uri = " + result.root.uri + "\n"); // [NOTE] url
@@ -270,7 +270,7 @@ router.route('/departTimeStation')
             });
 
             response.on('end', function () {
-                parseString(vParsed, function (err, result) {
+                parseString(vParsed, {explicitArray:false}, function (err, result) {
 
                     // console.log("etd result = " + util.inspect(result, { showHidden: false, depth: null }) + "\n"); // [DEBUG]
                     
@@ -387,7 +387,7 @@ router.route('/listAllStations')
             });
 
             response.on('end', function () {
-                parseString(vParsed, function (err, result) {
+                parseString(vParsed, {explicitArray:false}, function (err, result) {
                     vShow = JSON.stringify(result);
 
                     //if(result.root.stations == null || result.root.stations == ''){return res.send(['no trains to display'])}
