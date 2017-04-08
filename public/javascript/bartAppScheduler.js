@@ -56,7 +56,7 @@ app.controller('mainScreen', function ($scope, $http) {
 
     $scope.callRestService= function() {
         
-  $http({method: 'GET', url: '/someUrl'}).
+  $http({method: 'GET', url: '#/owner'}).
     success(function(data, status, headers, config) {
          $scope.results.push(data);  //retrieve results and add to existing results
     })
