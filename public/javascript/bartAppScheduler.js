@@ -17,6 +17,10 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource', 'ngSaniti
                 templateUrl: 'about.html',
                 controller: 'ctlAbout'
             })
+            .when('/developer', {
+                templateUrl: 'developer.html',
+                controller: ''
+            })
             .otherwise({
                 redirectTo: '/'
             });
