@@ -5,17 +5,13 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource', 'ngSaniti
                 templateUrl: 'main.html',
                 controller: 'mainScreen'
             })
-            .when('/nearSta', {
-                templateUrl: 'nearSta.html',
-                controller: 'ctlNearStationScreen'
+            .when('/owner', {
+                templateUrl: 'owner.html',
+                controller: 'ctlOwner'
             })
-            .when('/nextTrain', {
-                templateUrl: 'nextTrain.html',
-                controller: 'nextTrainScreen'
-            })
-            .when('/tripDetails', {
-                templateUrl: 'tripDetails.html',
-                controller: 'tripDetailsScreen'
+            .when('/contact', {
+                templateUrl: 'contact.html',
+                controller: 'ctlContact'
             })
             .otherwise({
                 redirectTo: '/'
@@ -261,7 +257,7 @@ app.controller('mainScreen', function ($scope, $rootScope, listStations, departT
 // [NOTE] - working on moving this from 'mainScreen' controller
 //---
 
-app.controller('ctlNearStationScreen', function ($scope, nearStation) {
+app.controller('ctlOwner', function ($scope, nearStation) {
     //
     $scope.NearestStation = function () {
         var vCurPosition = '';
@@ -306,3 +302,5 @@ app.controller('ctlNearStationScreen', function ($scope, nearStation) {
         };
     };
 });
+
+app.controller('ctlContact', function ($scope, nearStation) {});
