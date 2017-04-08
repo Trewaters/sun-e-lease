@@ -48,13 +48,19 @@ app.factory('listStations', function ($resource, $rootScope) {
 //---
 app.controller('mainScreen', function ($scope, $http) {
 
+    var vNewSearch = {
+        MinSquareFoot: 200,
+        NumSites: 1,
+        UtilityServices: "PG & E"
+};
+
     $scope.callRestService= function() {
         
   $http({method: 'GET', url: '/someUrl'}).
     success(function(data, status, headers, config) {
          $scope.results.push(data);  //retrieve results and add to existing results
     })
-}
+};
 
 });
 

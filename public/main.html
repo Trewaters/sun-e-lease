@@ -9,25 +9,72 @@
   </div>
   <br>
 <div>
-<input type="text" my-on-key-down-call="callRestService()"> 
+
+<!--
+  <input type="text" my-on-key-down-call="callRestService()"> 
+  -->
+
+  <form action="/action_page.php">
+
+      <fieldset>
+
+        <label>Minimum Square Foot</label>
+        <input type="text" class="form-control" ng-model="vNewSearch.MinSquareFoot">
+
+        <label>Number of Sites</label>
+        <input type="text" class="form-control" ng-model="vNewSearch.NumSites">
+
+        <label>UtilityServices</label>
+        <input type="text" class="form-control" ng-model="vNewSearch.UtilityServices">
+
+      </fieldset>
+
+</form>
+
+  <button class="btn btn-default btn-lg" type="button" ng-click="API_Params()">
+        Search for Opportunities
+    </button>
+
 </div>
 </header>
-<!-- Google Map -->
+<!-- Google Map 
 <div id="googleMap" class="w3-grayscale" style="width:100%;height:450px;"></div>
+-->
+
+<div id="map" class="w3-grayscale" style="width:100%;height:450px;"></div>
+
 
 <!-- Footer -->
-<footer class="w3-center w3-black w3-padding-16">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
-</footer>
 
 <!-- Add Google Maps -->
 <script>
+
+function myMap() {
+  var myCenter = new google.maps.LatLng(37.7919407, -122.2988341,12);
+  var mapCanvas = document.getElementById("map");
+  var mapOptions = {
+        center:myCenter,
+    zoom:12, scrollwheel: false, draggable: true,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+  var map = new google.maps.Map(mapCanvas, mapOptions);
+  var marker = new google.maps.Marker({position:myCenter});
+  marker.setMap(map);
+  google.maps.event.addListener(marker,'click',function() {
+    var infowindow = new google.maps.InfoWindow({
+      content:"Address you plan to work with"
+    });
+  infowindow.open(map,marker);
+  });
+}
+
+  /*
 function myMap()
 {
   myCenter=new google.maps.LatLng(37.7919407, -122.2988341,12);
   var mapOptions= {
     center:myCenter,
-    zoom:12, scrollwheel: false, draggable: false,
+    zoom:12, scrollwheel: false, draggable: true,
     mapTypeId:google.maps.MapTypeId.ROADMAP
   };
   var map=new google.maps.Map(document.getElementById("googleMap"),mapOptions);
@@ -35,7 +82,28 @@ function myMap()
   var marker = new google.maps.Marker({
     position: myCenter,
   });
+
   marker.setMap(map);
 }
+
+// seperate code
+
+google.maps.event.addListener(map, 'click', function(event) {
+  placeMarker(map, event.latLng);
+  });
+
+function placeMarker(map, location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  var infowindow = new google.maps.InfoWindow({
+    content: 'Latitude: ' + location.lat() +
+    '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);
+}
+*/
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzvPk9Br5PGzkyiz90mH8eHXDugbZiW5U&callback=myMap"></script>
