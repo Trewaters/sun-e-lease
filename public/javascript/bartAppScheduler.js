@@ -20,41 +20,43 @@ var app = angular.module("bartAppScheduler", ['ngRoute', 'ngResource', 'ngSaniti
             .otherwise({
                 redirectTo: '/'
             });
-    });
+    })
+    .directive('myOnKeyDownCall', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {            
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+        });
+    };
+})
+    ;
 
 //---
 // services
 //---
-app.factory('listStations', function ($resource, $q, $rootScope) {
+/*
+app.factory('listStations', function ($resource, $rootScope) {
     return $resource('/yah/listAllStations', {});
 });
-
-app.factory('departTime', function ($resource, $q, $rootScope) {
-    return $resource('/yah/departTimeStation', {});
-    // required parameter 'vOriginStation' as string
-});
-
-app.factory('stationSchedule', function ($resource, $q, $rootScope) {
-    return $resource('/yah/stationSched', {});
-    // required parameter 'vOriginStation' as string
-});
-
-app.factory('nearStation', function ($resource, $q, $rootScope) {
-    return $resource('/yah/nearestStation', {});
-    //required parameter {'latitude': vLat, 'longitude': vLong}
-});
-
-app.factory('detailsDepart', function ($resource, $q, $rootScope) {
-    return $resource('/yah/tripDetailsDepart', {});
-    // required parameter {'vOriginStation': station abbreviation, 'vDestination': station abbreviation}
-    // optional additional parameters { vTime, vDate, vB, vA, vLegend }
-});
+*/
 
 //---
 // controllers, 'mainScreen""
 // Main splash screen that users hit
 //---
-app.controller('mainScreen', function ($scope) {});
+app.controller('mainScreen', function ($scope, $http) {
+
+    $scope.callRestService= function() {
+        
+  $http({method: 'GET', url: '/someUrl'}).
+    success(function(data, status, headers, config) {
+         $scope.results.push(data);  //retrieve results and add to existing results
+    })
+}
+
+});
 
 app.controller('ctlOwner', function ($scope, nearStation) {});
 
