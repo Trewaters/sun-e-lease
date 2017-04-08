@@ -23,7 +23,7 @@
   "main": "ba_lkgiii",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Trewaters/..."
+    "url": "https://github.com/Trewaters/sun-e-lease"
   },
   "dependencies": {
     "body-parser": "^1.15.0",
